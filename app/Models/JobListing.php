@@ -22,6 +22,7 @@ class JobListing extends Model
         'location',
         'work_type',
         'application_deadline',
+        'status',
     ];
 
     //make application expired after 3 days
@@ -40,5 +41,9 @@ class JobListing extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
 }
