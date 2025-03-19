@@ -31,8 +31,8 @@ class HomeController extends Controller
                 $query->where('application_deadline', '>=', now())
                       ->where('status', 'approved');
             }
-        ])->orderBy('name', 'ASC')->take(10)->get();
-        // dd($popularCategories);
+            ])->orderBy('name', 'ASC')->take(10)->get();
+            // dd($popularCategories);
 
         return view('candidates.home', compact('categories', 'popularCategories', 'locations', 'popularJobs', 'jobCandidates', 'topCompanies'));
     }

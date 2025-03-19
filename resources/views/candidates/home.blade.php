@@ -269,8 +269,14 @@
           <div class="col-lg-4 col-xl-3 col-md-6">
             <div class="single_company">
               <div class="thumb">
-              <img src="{{ asset($company && $company->logo_path ? $company->logo_path : 'img/svg_icon/5.svg') }}" 
-              alt="{{ $company->name ?? 'Company Logo' }}" />
+         
+
+              @if ($company->logo_path)
+                        <img src="{{ asset('storage/' . $company->logo_path) }}" class="rounded mb-3" width="150">
+                    @else
+                        <img src="{{ asset('/img/svg_icon/1.svg') }}" class="rounded mb
+                        -3" width="150">
+                    @endif
               </div>
               <a href="{{ route('user.company.show', $company) }}">
               <h3>{{ $company->name }}</h3></a>

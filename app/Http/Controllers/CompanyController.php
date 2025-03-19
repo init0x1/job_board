@@ -84,11 +84,10 @@ class CompanyController extends Controller
                 'industry' => $request->industry,
                 'established_year' => $request->established_year,
                 'logo_path' => $logoPath,
-                'brands_images' => $brandImages
-
+                'brands_images' => json_encode($brandImages) // Convert array to JSON before saving
             ]
         );
-
+        
         return redirect()->route('employer.dashboard')->with('success', 'Company information saved successfully.');
     }
 

@@ -16,7 +16,13 @@ class Company extends Model
         'description',
         'industry',
         'established_year',
+        'brands_images' 
     ];
+    
+    protected $casts = [
+        'brands_images' => 'array',
+    ];
+    
 
     /**
      * Get the user that owns the company.

@@ -1,5 +1,16 @@
-@extends("candidates.layouts.app")
 
+@extends("candidates.layouts.app")
+@section('customeCss')
+  <style>
+    .owl-carousel .owl-nav div {
+       left: 0;
+    }
+    .owl-carousel .owl-nav div.owl-next {
+      left: auto;
+      right: 0;
+    }
+  </style>
+@endsection
 @section("title")
    Job Board - {{ $job ? $job->title : 'Job Details' }}
 @endsection
@@ -35,8 +46,9 @@
                         <div class="single_jobs white-bg d-flex justify-content-between">
                             <div class="jobs_left d-flex align-items-center">
                                 <div class="thumb">
-                                    <img src="/img/svg_icon/1.svg" alt="">
-                                </div>
+                                @if ($job->company->logo_path ?? false)
+                                <img src="{{ asset('storage/' . $job->company->logo_path) }}" class="mt-3 rounded" width="100">
+                            @endif                                </div>
                                 <div class="jobs_conetent row">
                                     <div class="col-md-12">
                                         <a href="#"><h4>{{ $job->title }}</h4></a>
@@ -110,53 +122,25 @@
                             --}}
                             <p>{{ $job->benefits ?: 'No benefits found' }}</p>                        </div>
                     </div>
-                    @if ($job->company && $job->company->brands_images)
+                    @php
+                        $brandsImages = is_array($job->company->brands_images) ? $job->company->brands_images : json_decode($job->company->brands_images, true);
+                    @endphp
+
+                    @if ($brandsImages)
                     <div class="row mt-5">
                         <div class="col-lg-12">
                             <div class="company_job_active owl-carousel">
-                            @foreach(json_decode($job->company->brands_images, true) as $image)
+                            @foreach($brandsImages as $image)
                             <div class="single_candidates text-center">
-                                    <div class="thumb">
-                                        <img src="{{ asset('storage/' . $image) }}" alt="" />
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                    <div class="row  mt-5">
-                        <div class="col-lg-12">
-                            <div class="company_job_active owl-carousel">
-                                <div class="single_candidates text-center ml-1">
-                                    <div class="thumb">
-                                        <img src="/img/catagory/1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="single_candidates text-center ml-1">
-                                    <div class="thumb">
-                                        <!-- public\img\catagory\1.png -->
-                                    <img src="/img/catagory/1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="single_candidates text-center ml-1">
-                                    <div class="thumb">
-                                    <img src="/img/catagory/3.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="single_candidates text-center ml-1">
-                                    <div class="thumb">
-                                    <img src="/img/catagory/4.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="single_candidates text-center ml-1">
-                                    <div class="thumb">
-                                    <img src="/img/catagory/5.png" alt="" />
-                                    </div>
+                                <div class="thumb">
+                                  <img class="img-full w-100 h-100" style="    height: 150px !important;" src="{{ $image ? asset('storage/' . $image) : asset('/img/svg_icon/1.svg') }}" alt="">
                                 </div>
                             </div>
+                            @endforeach
                         </div>
                     </div>
+                    </div>
+                   
                     @endif
 
                         <!-- <div class="apply_job_form white-bg">
