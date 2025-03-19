@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\CompanyController;
@@ -82,6 +83,9 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
 // =============================
 
 // Admin Login & Logout
+
+Route::get('admin/register', [AuthController::class, 'showRegistrationForm'])->name('admin.register.form');
+Route::post('admin/register', [AuthController::class, 'register'])->name('admin.register');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
