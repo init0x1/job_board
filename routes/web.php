@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CandidateProfileController;
 
 // =============================
 // ✅ Public Routes
@@ -64,6 +65,12 @@ Route::middleware(['auth', 'role:candidate'])->group(function () {
 
     // Store skills after form submission
     Route::post('/candidate/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
+    Route::get('/candidate/skills', [CandidateProfileController::class, 'showSkills'])->name('candidate.skills');
+    Route::get('/candidate/profile', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
+    Route::post('/candidate/profile', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+    Route::get('/candidate/profile', [CandidateProfileController::class, 'show'])->name('candidate.profile');
+Route::put('/candidate/profile/update', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+Route::post('/candidate/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
 
 
     Route::get('/candidate/dashboard', function () {
@@ -149,6 +156,7 @@ Route::get('/user/company', [CompanyController::class, 'index_user'])->name('use
 // Candidate index , show Routes
 Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
 Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
+
 
 // job index , show Routes
 Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');
