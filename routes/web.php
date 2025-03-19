@@ -12,13 +12,16 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ApplicationController;
 
 // =============================
 // ✅ Public Routes
 // =============================
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('candidates.home');
+
 
 // =============================
 // ✅ User Authentication Routes
@@ -128,5 +131,35 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// =========================================================
+// Cadidantes Home page appear for login and non login users
+// =========================================================
+// Route::resource('company',CompanyController::class);
+// company index , show Routes
 
+Route::get('/user/company/{id}', [CompanyController::class, 'show_user'])->name('user.company.show');
+Route::get('/user/company', [CompanyController::class, 'index_user'])->name('user.company.index');
+// Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+
+// Candidate index , show Routes
+Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
+Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
+
+// job index , show Routes
+Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');
+Route::get('/user/job/{id}', [JobListingController::class, 'show_user'])->name('user.job.show');
+
+// category index , show Routes
+
+Route::get('/user/category', [CategoryController::class, 'index_user'])->name('user.category.index');
+// Route::get('/user/category/{id}', [CategoryController::class, 'show_user'])->name('user.category.show');
+
+//application index , show Routes
+// Route::get('/user/application', [ApplicationController::class, 'index_user'])->name('user.application.index');
+// Route::get('/user/application/{id}', [ApplicationController::class, 'show_user'])->name('user.application.show');
+// Route::get('/job/apply/{id}', [ApplicationController::class, 'applyJob'])->name('job.apply');
+
+// Apply job Route
+Route::post('/apply-job/{id}',[JobListingController::class,'applyJob'])->name('user.applyJob');
+Route::post('/save-job/{id}',[JobListingController::class,'saveJob'])->name('user.saveJob');
 require __DIR__.'/auth.php';
