@@ -60,8 +60,11 @@ Route::get('/dashboard', function () {
 // ✅ Candidate Routes
 // =============================
 Route::middleware(['auth', 'role:candidate'])->group(function () {
-    Route::get('/candidate/skills', [SkillsController::class, 'showSkillsForm'])->name('candidate.skills');
-    Route::post('/candidate/skills', [SkillsController::class, 'storeSkills']);
+    Route::get('/candidate/skills', [SkillsController::class, 'create'])->name('candidate.skills.create');
+
+    // Store skills after form submission
+    Route::post('/candidate/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
+    
 
     Route::get('/candidate/dashboard', function () {
         return view('candidate.dashboard');

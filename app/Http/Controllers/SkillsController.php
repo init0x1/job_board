@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skill;
 use App\Models\Profile;
@@ -10,72 +11,60 @@ use Illuminate\Support\Facades\Auth;
 class SkillsController extends Controller
 {
     /**
-     * Show the skills form for candidates.
+     * Show the skills form.
      */
-    public function showSkillsForm()
+    public function create()
     {
-        return view('candidate.skills', [
-            'skills' => Skill::all(), 
-            'userSkills' => Auth::user()->profile ? Auth::user()->profile->skills : [],
-        ]);
+        return view('candidate.skills');
     }
 
     /**
-     * Store candidate skills.
-     */
-    public function storeSkills(Request $request)
-    {
-        $request->validate([
-            'skills' => 'required|array|min:1', // Ensure at least one skill is selected
-            'skills.*' => 'exists:skills,id', // Each skill must exist in the database
-        ]);
-
-        $user = Auth::user();
-        $profile = $user->profile;
-
-        if (!$profile) {
-            $profile = Profile::create([
-                'user_id' => $user->id,
-            ]);
-        }
-
-        $profile->skills()->sync($request->skills); // Attach selected skills
-
-        return redirect('/home')->with('success', 'Skills updated successfully.');
-    }
-
-    /**
-     * Show all skills for admin (Optional Feature).
-     */
-    public function index()
-    {
-        return view('admin.skills.index', ['skills' => Skill::all()]);
-    }
-
-    /**
-     * Store a new skill (Admin only).
+     * Store skills for the authenticated candidate.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:skills,name',
+            'phone_number' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+            'linkedin_url' => 'nullable|url',
+            'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'skills' => 'required|string',
+            'bio' => 'required|string',
         ]);
 
-        Skill::create([
-            'name' => $request->name,
-            'slug' => strtolower(str_replace(' ', '-', $request->name)), // Generate slug
-        ]);
+        $user = Auth::user();
 
-        return redirect()->back()->with('success', 'Skill added successfully.');
+        // Ensure profile exists
+        $profile = Profile::firstOrCreate(
+            ['user_id' => $user->id], // Find by user_id
+            [
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'linkedin_url' => $request->linkedin_url,
+                'bio' => $request->bio,
+                'resume_path' => $request->file('resume')
+                    ? $request->file('resume')->store('resumes', 'public')
+                    : null,
+            ]
+        );
+
+        // Convert skills string into an array & remove empty values
+        $skillNames = array_filter(array_map('trim', explode(',', $request->skills)));
+
+        $skillIds = [];
+
+        foreach ($skillNames as $skillName) {
+            $skill = Skill::firstOrCreate(
+                ['slug' => strtolower(str_replace(' ', '-', $skillName))], // Generate slug
+                ['name' => ucfirst($skillName)]
+            );
+
+            $skillIds[] = $skill->id;
+        }
+
+        // Attach skills to profile (many-to-many)
+        $profile->skills()->sync($skillIds);
+
+        return redirect()->route('dashboard')->with('success', 'Skills updated successfully!');
     }
-
-    /**
-     * Delete a skill (Admin only).
-     */
-    public function destroy(Skill $skill)
-    {
-        $skill->delete();
-
-        return redirect()->back()->with('success', 'Skill deleted successfully.');
-    }
-} 
+}
