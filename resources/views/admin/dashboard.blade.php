@@ -48,28 +48,36 @@
 
             <div class="row text-center">
                 <div class="col-md-3 mb-3">
-                    <div class="card bg-light p-3 h-100">
-                        <h5 class="card-title">Total Jobs</h5>
-                        <p class="display-6 text-primary">{{ $jobStats['total'] }}</p>
-                    </div>
+                    <a href="{{ route('admin.jobs.list', ['status' => 'all']) }}" class="text-decoration-none">
+                        <div class="card bg-light p-3 h-100">
+                            <h5 class="card-title">Total Jobs</h5>
+                            <p class="display-6 text-primary">{{ $jobStats['total'] }}</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card bg-light p-3 h-100">
-                        <h5 class="card-title">Pending Jobs</h5>
-                        <p class="display-6 text-warning">{{ $jobStats['pending'] }}</p>
-                    </div>
+                    <a href="{{ route('admin.jobs.list', ['status' => 'pending']) }}" class="text-decoration-none">
+                        <div class="card bg-light p-3 h-100">
+                            <h5 class="card-title">Pending Jobs</h5>
+                            <p class="display-6 text-warning">{{ $jobStats['pending'] }}</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card bg-light p-3 h-100">
-                        <h5 class="card-title">Approved Jobs</h5>
-                        <p class="display-6 text-success">{{ $jobStats['approved'] }}</p>
-                    </div>
+                    <a href="{{ route('admin.jobs.list', ['status' => 'approved']) }}" class="text-decoration-none">
+                        <div class="card bg-light p-3 h-100">
+                            <h5 class="card-title">Approved Jobs</h5>
+                            <p class="display-6 text-success">{{ $jobStats['approved'] }}</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card bg-light p-3 h-100">
-                        <h5 class="card-title">Rejected Jobs</h5>
-                        <p class="display-6 text-danger">{{ $jobStats['rejected'] }}</p>
-                    </div>
+                    <a href="{{ route('admin.jobs.list', ['status' => 'rejected']) }}" class="text-decoration-none">
+                        <div class="card bg-light p-3 h-100">
+                            <h5 class="card-title">Rejected Jobs</h5>
+                            <p class="display-6 text-danger">{{ $jobStats['rejected'] }}</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

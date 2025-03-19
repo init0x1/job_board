@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CandidateProfileController;
 
 // =============================
 // ✅ Public Routes
@@ -60,8 +61,17 @@ Route::get('/dashboard', function () {
 // ✅ Candidate Routes
 // =============================
 Route::middleware(['auth', 'role:candidate'])->group(function () {
-    Route::get('/candidate/skills', [SkillsController::class, 'showSkillsForm'])->name('candidate.skills');
-    Route::post('/candidate/skills', [SkillsController::class, 'storeSkills']);
+    Route::get('/candidate/skills', [SkillsController::class, 'create'])->name('candidate.skills.create');
+
+    // Store skills after form submission
+    Route::post('/candidate/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
+    Route::get('/candidate/skills', [CandidateProfileController::class, 'showSkills'])->name('candidate.skills');
+    Route::get('/candidate/profile', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
+    Route::post('/candidate/profile', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+    Route::get('/candidate/profile', [CandidateProfileController::class, 'show'])->name('candidate.profile');
+Route::put('/candidate/profile/update', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+Route::post('/candidate/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
+
 
     Route::get('/candidate/dashboard', function () {
         return view('candidate.dashboard');
@@ -104,9 +114,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
 
     // Manage Pending Job Listings
+    Route::get('/jobs/{status}',[AdminDashboardController::class, 'listJobs'])->name('admin.jobs.list');
+    Route::get('/jobs/edit/{id}', [AdminDashboardController::class, 'editJob'])->name('admin.jobs.edit');
     Route::get('/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
     Route::post('/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
     Route::post('/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
+    Route::delete('/jobs/delete/{id}', [AdminDashboardController::class, 'deleteJob'])->name('admin.jobs.delete');
 
     // Manage Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.list');
@@ -143,6 +156,7 @@ Route::get('/user/company', [CompanyController::class, 'index_user'])->name('use
 // Candidate index , show Routes
 Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
 Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
+
 
 // job index , show Routes
 Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');

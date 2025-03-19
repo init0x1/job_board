@@ -48,6 +48,11 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Check if user is an admin.
+     */
+    
+
 
     public function profile()
     {
