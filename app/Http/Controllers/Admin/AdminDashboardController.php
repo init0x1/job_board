@@ -99,8 +99,68 @@ class AdminDashboardController extends Controller
             ->with('success', 'User deleted successfully.');
     }
 
+    // Fetch all jobs based on status
+    public function listJobs($status, Request $request)
+    {
+        //validate the status
+        $validStatuses = ['all', 'pending', 'approved', 'rejected'];
 
 
+        if (!in_array($status, $validStatuses)) {
+            abort(404, 'Invalid job status.');
+        }
+
+        $query = JobListing::query();
+
+        // Filter by status if not 'all'
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Search by job title
+        if ($request->has('search') && $request->search) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by work type
+        if ($request->has('work_type') && $request->work_type) {
+            $query->where('work_type', $request->work_type);
+        }
+
+        // Filter by location
+        if ($request->has('location') && $request->location) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
+
+        if ($status === 'approved') {
+            $query->withCount(['applications' => function ($query) {
+                $query->where('status', 'approved');
+            }]);
+        }
+
+        $jobs = $query->paginate(10);
+
+        return view('admin.jobs.list', compact('jobs', 'status'));
+    }
+
+    public function editJob($id)
+    {
+        $job = JobListing::withCount(['applications' => function ($query) {
+            $query->where('status', 'approved');
+        }])->findOrFail($id);
+
+        return view('admin.jobs.edit', compact('job'));
+    }
+
+    public function deleteJob($id)
+    {
+        $job = JobListing::findOrFail($id);
+
+        $job->delete();
+
+        return redirect()->route('admin.jobs.list', ['status' => 'all'])
+            ->with('success', 'Job deleted successfully.');
+    }
 
     // Fetch all job listings with status 'pending'
     public function pendingJobs()

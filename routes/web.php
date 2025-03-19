@@ -64,7 +64,7 @@ Route::middleware(['auth', 'role:candidate'])->group(function () {
 
     // Store skills after form submission
     Route::post('/candidate/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
-    
+
 
     Route::get('/candidate/dashboard', function () {
         return view('candidate.dashboard');
@@ -107,9 +107,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
 
     // Manage Pending Job Listings
+    Route::get('/jobs/{status}',[AdminDashboardController::class, 'listJobs'])->name('admin.jobs.list');
+    Route::get('/jobs/edit/{id}', [AdminDashboardController::class, 'editJob'])->name('admin.jobs.edit');
     Route::get('/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
     Route::post('/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
     Route::post('/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
+    Route::delete('/jobs/delete/{id}', [AdminDashboardController::class, 'deleteJob'])->name('admin.jobs.delete');
 
     // Manage Categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.list');
