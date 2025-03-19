@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\JobListingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -86,27 +87,33 @@ Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 // Admin Dashboard (Only for Admins)
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Manage users
-    Route::get('/admin/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
-    Route::get('/admin/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
-    Route::put('/admin/users/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
-    Route::delete('/admin/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::get('/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
+    Route::get('/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/users/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+
     // Manage Pending Job Listings
-    Route::get('/admin/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
+    Route::get('/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
+    Route::post('/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
+    Route::post('/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
 
-    // Approve a Job Listing
-    Route::post('/admin/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
+    // Manage Categories
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.list');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+    Route::put('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
 
-    // Reject a Job Listing
-    Route::post('/admin/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
-
-    // Manage Skills (Admin Only)
-    Route::get('/admin/skills', [SkillsController::class, 'index'])->name('admin.skills');
-    Route::post('/admin/skills', [SkillsController::class, 'store']);
-    Route::delete('/admin/skills/{skill}', [SkillsController::class, 'destroy']);
+    // Manage Skills
+    Route::get('/skills', [SkillsController::class, 'index'])->name('admin.skills');
+    Route::post('/skills', [SkillsController::class, 'store']);
+    Route::delete('/skills/{skill}', [SkillsController::class, 'destroy']);
 });
 
 // =============================
