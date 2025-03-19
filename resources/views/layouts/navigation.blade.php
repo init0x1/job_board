@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="{{ route('home') }}">Job Board</a>
+        <a class="navbar-brand" href="{{ route('candidates.home') }}">Job Board</a>
 
         <!-- Mobile Toggle -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

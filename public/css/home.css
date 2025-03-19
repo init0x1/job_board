@@ -1,0 +1,4 @@
+.nice-select ul.list {
+    max-height: 400px;
+    overflow-y: auto;
+}

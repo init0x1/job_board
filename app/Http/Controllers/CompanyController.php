@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers\Employer;
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,6 +14,26 @@ class CompanyController extends Controller
     /**
      * Show the company information form for employers.
      */
+    public function index_user()
+    {
+        
+        $companies = Company::all();
+        return view('globalPages.companies.index', compact('companies'));
+    }
+
+    /**
+    * Display the specified resource.
+    */
+
+   public function show_user($id)
+    {
+        $company =  Company::find($id); // Fetch job by ID
+        
+        if (!$company) {
+            return redirect()->route('user.company.index')->with('error', 'Company not found');
+        }
+        return view('globalPages.companies.show', compact('company'));
+    }
     public function showCompanyForm()
     {
         return view('employer.company', [
@@ -31,6 +53,7 @@ class CompanyController extends Controller
             'industry' => 'nullable|string|max:255',
             'established_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // 2MB Max
+            'brands_images.*' => 'image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $user = Auth::user();
@@ -42,6 +65,13 @@ class CompanyController extends Controller
                 Storage::delete('public/' . $logoPath);
             }
             $logoPath = $request->file('logo')->store('company_logos', 'public');
+}
+        // handle multiple brand_images
+        $brandImages = [];
+        if ($request->hasFile('brands_images')) {
+            foreach ($request->file('brands_images') as $image) {
+                $brandImages[] = $image->store('company_brands', 'public');
+            }
         }
 
         // Update or create company record
@@ -54,6 +84,8 @@ class CompanyController extends Controller
                 'industry' => $request->industry,
                 'established_year' => $request->established_year,
                 'logo_path' => $logoPath,
+                'brands_images' => $brandImages
+
             ]
         );
 

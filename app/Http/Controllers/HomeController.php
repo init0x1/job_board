@@ -16,25 +16,25 @@ class HomeController extends Controller
     {
         $categories = Category::orderBy('name', 'ASC')->get();
 
-
+        
         $popularCategories = Category::withCount([
             'jobs' => function ($query) {
                 $query->where('application_deadline', '>=', now())
-                    ->where('status', 'approved');
+                      ->where('status', 'approved');
             }
         ])->orderBy('name', 'ASC')->take(10)->get();
-        $locations = Location::orderBy('name', 'ASC')->get();
+        $locations = Location::orderBy('name', 'ASC')->get(); 
         $popularJobs = JobListing::where('status', 'approved')->where('application_deadline', '>=', now())->get();
-        $jobCandidates = User::where('role', 'candidate')->with('profile')->latest()->take(8)->get();
+        $jobCandidates = User::where('role', 'candidate')->with('profile')->latest()->take(8)->get(); 
         $topCompanies = Company::withCount([
             'jobs' => function ($query) {
                 $query->where('application_deadline', '>=', now())
-                    ->where('status', 'approved');
+                      ->where('status', 'approved');
             }
         ])->orderBy('name', 'ASC')->take(10)->get();
         // dd($popularCategories);
 
         return view('candidates.home', compact('categories', 'popularCategories', 'locations', 'popularJobs', 'jobCandidates', 'topCompanies'));
     }
-
+    
 }
