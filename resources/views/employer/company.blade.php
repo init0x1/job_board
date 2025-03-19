@@ -48,7 +48,21 @@
                                 <img src="{{ asset('storage/' . $company->logo_path) }}" class="mt-3 rounded" width="100">
                             @endif
                         </div>
+                        <div class="mb-3">
+                            <label for="brands_images" class="form-label">Brand Images</label>
+                            <input type="file" class="form-control" id="brands_images" name="brands_images[]" multiple>
+                      
+                        @if ($company->brands_images ?? false)
+                            <div class="row">
+                                @foreach (json_decode($company->brands_images) as $image)
+                                    <div class="col-md-3">
 
+                                        <img src="{{ asset('storage/' . $image) }}" class="mt-3 rounded" width="100">
+                                    </div>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
                         <button type="submit" class="btn btn-primary w-100">Save Company Info</button>
                     </form>
                 </div>

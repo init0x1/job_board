@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\JobListingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -11,13 +12,16 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ApplicationController;
 
 // =============================
 // ✅ Public Routes
 // =============================
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('candidates.home');
+
 
 // =============================
 // ✅ User Authentication Routes
@@ -93,27 +97,33 @@ Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 // Admin Dashboard (Only for Admins)
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Manage users
-    Route::get('/admin/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
-    Route::get('/admin/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
-    Route::put('/admin/users/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
-    Route::delete('/admin/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::get('/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
+    Route::get('/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/users/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+
     // Manage Pending Job Listings
-    Route::get('/admin/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
+    Route::get('/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
+    Route::post('/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
+    Route::post('/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
 
-    // Approve a Job Listing
-    Route::post('/admin/jobs/{job}/approve', [AdminDashboardController::class, 'approveJob'])->name('admin.jobs.approve');
+    // Manage Categories
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.list');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+    Route::put('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
 
-    // Reject a Job Listing
-    Route::post('/admin/jobs/{job}/reject', [AdminDashboardController::class, 'rejectJob'])->name('admin.jobs.reject');
-
-    // Manage Skills (Admin Only)
-    Route::get('/admin/skills', [SkillsController::class, 'index'])->name('admin.skills');
-    Route::post('/admin/skills', [SkillsController::class, 'store']);
-    Route::delete('/admin/skills/{skill}', [SkillsController::class, 'destroy']);
+    // Manage Skills
+    Route::get('/skills', [SkillsController::class, 'index'])->name('admin.skills');
+    Route::post('/skills', [SkillsController::class, 'store']);
+    Route::delete('/skills/{skill}', [SkillsController::class, 'destroy']);
 });
 
 // =============================
@@ -124,5 +134,35 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// =========================================================
+// Cadidantes Home page appear for login and non login users
+// =========================================================
+// Route::resource('company',CompanyController::class);
+// company index , show Routes
 
+Route::get('/user/company/{id}', [CompanyController::class, 'show_user'])->name('user.company.show');
+Route::get('/user/company', [CompanyController::class, 'index_user'])->name('user.company.index');
+// Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
+
+// Candidate index , show Routes
+Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
+Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
+
+// job index , show Routes
+Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');
+Route::get('/user/job/{id}', [JobListingController::class, 'show_user'])->name('user.job.show');
+
+// category index , show Routes
+
+Route::get('/user/category', [CategoryController::class, 'index_user'])->name('user.category.index');
+// Route::get('/user/category/{id}', [CategoryController::class, 'show_user'])->name('user.category.show');
+
+//application index , show Routes
+// Route::get('/user/application', [ApplicationController::class, 'index_user'])->name('user.application.index');
+// Route::get('/user/application/{id}', [ApplicationController::class, 'show_user'])->name('user.application.show');
+// Route::get('/job/apply/{id}', [ApplicationController::class, 'applyJob'])->name('job.apply');
+
+// Apply job Route
+Route::post('/apply-job/{id}',[JobListingController::class,'applyJob'])->name('user.applyJob');
+Route::post('/save-job/{id}',[JobListingController::class,'saveJob'])->name('user.saveJob');
 require __DIR__.'/auth.php';

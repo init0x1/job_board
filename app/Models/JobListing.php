@@ -45,5 +45,14 @@ class JobListing extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    // Define the relationship
+    public function applications()
+    {
+        return $this->hasMany(Application::class, 'job_id');
+    }
 
+    public function isAppliedByUser()
+    {
+        return $this->applications()->where('user_id', auth()->id())->exists();
+    }
 }
