@@ -1,82 +1,181 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Pending Job Listings</h2>
+    <h2 class="font-weight-bold text-dark">Pending Job Listings</h2>
 @endsection
 
 @section('content')
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+    <style>
+        .table-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
 
-                    <!-- Flash Messages -->
-                    @if (session('success'))
-                        <div class="alert alert-success mb-4">{{ session('success') }}</div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger mb-4">{{ session('error') }}</div>
-                    @endif
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
 
-                    <!-- Check if there are pending job listings -->
-                    @if ($pendingJobs->isEmpty())
-                        <p class="text-gray-600 text-center py-4">No pending job listings found.</p>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse">
-                                <thead>
-                                <tr class="bg-gray-100 border-b">
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Title</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Company</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Location</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Work Type</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Posted On</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+        .table th, .table td {
+            white-space: normal;
+            overflow: hidden;
+            padding: 14px 12px;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: left;
+            border: none;
+        }
+
+        .table tbody tr {
+            background-color: #ffffff;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table tbody tr td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .table tbody tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Buttons Styling */
+        .btn {
+            padding: 8px 14px;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+            border: none;
+        }
+
+        .btn-approve {
+            background-color: #28a745;
+            color: white;
+            transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .btn-approve:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+            transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .btn-reject:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .badge {
+            font-size: 1rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        /* Improved Badge Colors */
+        .badge.bg-primary {
+            background-color: #007bff;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .table th, .table td {
+                font-size: 14px;
+                padding: 10px 5px;
+                word-break: break-word;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+
+    <div class="container py-4">
+        <div class="card shadow-lg rounded-lg">
+            <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0">Pending Job Listings</h5>
+            </div>
+            <div class="card-body">
+                @if ($pendingJobs->isEmpty())
+                    <p class="text-center text-muted">No pending job listings found.</p>
+                @else
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Location</th>
+                                    <th>Work Type</th>
+                                    <th>Posted On</th>
+                                    <th>Actions</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
                                 @foreach ($pendingJobs as $job)
-                                    <tr class="border-b hover:bg-gray-50">
-                                        <td class="px-6 py-4 text-sm text-gray-900">{{ $job->title }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">{{ $job->company->name }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">{{ $job->location }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">
-                                                <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $job->work_type == 'remote' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
-                                                    {{ ucfirst($job->work_type) }}
-                                                </span>
+                                    <tr>
+                                        <td>{{ $job->title }}</td>
+                                        <td>{{ $job->company->name }}</td>
+                                        <td>{{ $job->location }}</td>
+                                        <td>
+                                            <span class="badge {{ $job->work_type == 'remote' ? 'bg-primary' : 'bg-secondary' }}">
+                                                {{ ucfirst($job->work_type) }}
+                                            </span>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-900">{{ $job->created_at->format('M d, Y') }}</td>
-                                        <td class="px-6 py-4 text-sm">
-                                            <div class="flex space-x-2">
-                                                <!-- Approve Button -->
+                                        <td>{{ $job->created_at->format('M d, Y') }}</td>
+                                        <td class="text-center">
+                                            <div class="action-buttons">
                                                 <form action="{{ route('admin.jobs.approve', $job->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white text-sm font-bold py-1 px-3 rounded flex items-center">
-                                                        <i class="bi bi-check-circle mr-1"></i> Approve
+                                                    <button type="submit" class="btn btn-approve">
+                                                        <i class="fas fa-check"></i> Approve
                                                     </button>
                                                 </form>
-
-                                                <!-- Reject Button -->
                                                 <form action="{{ route('admin.jobs.reject', $job->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-1 px-3 rounded flex items-center">
-                                                        <i class="bi bi-x-circle mr-1"></i> Reject
+                                                    <button type="submit" class="btn btn-reject">
+                                                        <i class="fas fa-times"></i> Reject
                                                     </button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pagination Links -->
-                        <div class="mt-4 flex justify-center">
-                            {{ $pendingJobs->links('pagination::bootstrap-4') }}
-                        </div>
-                    @endif
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{ $pendingJobs->links('pagination::bootstrap-4') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
