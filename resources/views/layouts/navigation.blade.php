@@ -14,7 +14,7 @@
             <ul class="navbar-nav me-auto">
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('candidate.dashboard') || request()->routeIs('employer.dashboard') || request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('candidate.dashboard') || request()->routeIs('employer.dashboard') || request()->routeIs('admin.dashboard') ? 'active' : '' }}" 
                             href="{{ route('dashboard') }}">
                             Dashboard
                         </a>
