@@ -87,8 +87,13 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admi
 
 // Admin Dashboard (Only for Admins)
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+    // Manage users
+    Route::get('/admin/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
+    Route::get('/admin/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/admin/users/update/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/admin/users/delete/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
     // Manage Pending Job Listings
     Route::get('/admin/jobs/pending', [AdminDashboardController::class, 'pendingJobs'])->name('admin.jobs.pending');
 
