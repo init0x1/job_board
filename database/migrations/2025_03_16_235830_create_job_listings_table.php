@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();
             $table->date('application_deadline')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected']);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->boolean('is_featured')->default(false);
             $table->integer('availble_vacancies')->nullable()->default(1);
             $table->enum('job_nature', ['full-time', 'part-time', 'hybrid'])->nullable()->default('full-time');
