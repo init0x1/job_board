@@ -14,7 +14,6 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CandidateController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ApplicationController;
 
 // =============================
