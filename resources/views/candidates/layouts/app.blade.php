@@ -65,7 +65,7 @@
 
                   
                      <li><a href="{{ route('user.application.index') }}">Applications</a></li>
-                     <li><a href="{{ route('user.application.saved') }}">Saved</a></li>
+                     <li><a href="#">Saved</a></li>
                      @elseif(Auth::user()->role == 'employer')
                      <li class="show-employeer-menu"><a href="{{ route('user.job.index') }}">Jobs</a></li>
                      @endif
