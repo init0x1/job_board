@@ -236,9 +236,16 @@ class JobListingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JobListing $jobListing)
+    public function destroy(JobListing $job)
     {
-        //
+        if ($job->company_id != auth()->user()->company->id) {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        $job->delete();
+    
+        return redirect()->route('employer.jobs')
+            ->with('success', 'Job deleted successfully.');
     }
     public function applyJob(Request $request, $id)
     {

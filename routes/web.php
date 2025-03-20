@@ -91,6 +91,7 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/jobs/{job}', [JobListingController::class, 'showEmployerJob'])->name('employer.jobs.show');
     Route::get('/employer/jobs/{job}/edit', [JobListingController::class, 'edit'])->name('employer.jobs.edit');
     Route::put('/employer/jobs/{job}', [JobListingController::class, 'update'])->name('employer.jobs.update');
+    Route::delete('/employer/jobs/{job}', [JobListingController::class, 'destroy'])->name('employer.jobs.destroy');
 });
 
 // =============================
