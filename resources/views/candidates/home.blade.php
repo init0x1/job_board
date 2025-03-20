@@ -61,40 +61,44 @@
 
     <!-- catagory_area -->
     <div class="catagory_area">
+
       <div class="container">
-        <div class="row cat_search">
-          <div class="col-lg-3 col-md-4">
-            <div class="single_input">
-              <input type="text" placeholder="Search keyword" />
+        <form method="GET" action="{{ route('user.job.index') }}">
+
+            <div class="row cat_search">
+              <div class="col-lg-3 col-md-4">
+                <div class="single_input">
+                  <input type="text" name="keyword" placeholder="Search keyword" value="{{ request('keyword') }}">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-4">
+                <div class="single_input">
+                  <select class="wide" name="category">
+                    <option value="" {{ request('category') == '' ? 'selected' : '' }}>All Categories</option>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-4">
+                <div class="single_input">
+                  <select class="wide" name="location">
+                    <!-- <option value="">Select Location</option> -->
+                  <option data-display="Location"value="">Location</option>
+                    @foreach($locations as $location)
+                    <option value="{{$location->id}}" {{ request('location') == $location->name ? 'selected' : '' }}>{{$location->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-4">
+                <div class="job_btn">
+                  <button type="submit" class="boxed-btn3 w-100">Find Job</button>
+                </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4">
-            <div class="single_input">
-              <select class="wide overflow-x-scroll" style="height:50px">
-                <option data-display="Location">Location</option>
-                @foreach($locations as $location)
-                <option value="{{$location->id}}">{{$location->name}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-4">
-            <div class="single_input">
-              <select class="wide">
-                <option  disabled selected>-- Select Category</option>
-                @foreach($categories as $category)
-                <option value="{{$category->id}}">{{$category->name}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-12">
-            <div class="job_btn">
-            
-              <a href="{{ route('user.job.index') }}" class="boxed-btn3">Find Job</a>
-            </div>
-          </div>
-        </div>
+        </form>    
         <div class="row">
           <div class="col-lg-12">
             <div class="popular_search d-flex align-items-center">
@@ -112,6 +116,8 @@
             </div>
           </div>
         </div>
+        </div>
+
       </div>
     </div>
     <!--/ catagory_area -->

@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Http\Controllers\Employer;
 
 namespace App\Http\Controllers;
 
@@ -57,6 +56,9 @@ class CompanyController extends Controller
         ]);
 
         $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to add a company.');
+        }
         
         // Handle logo upload
         $logoPath = $user->company->logo_path ?? null;
@@ -75,18 +77,16 @@ class CompanyController extends Controller
         }
 
         // Update or create company record
-        $company = Company::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'name' => $request->name,
-                'website' => $request->website,
-                'description' => $request->description,
-                'industry' => $request->industry,
-                'established_year' => $request->established_year,
-                'logo_path' => $logoPath,
-                'brands_images' => json_encode($brandImages) // Convert array to JSON before saving
-            ]
-        );
+        $company = Company::firstOrNew(['user_id' => $user->id]);
+        $company->name = $request->name;
+        $company->website = $request->website;
+        $company->description = $request->description;
+        $company->industry = $request->industry;
+        $company->established_year = $request->established_year;
+        $company->logo_path = $logoPath;
+        $company->brands_images = json_encode($brandImages);
+        $company->save();
+        
         
         return redirect()->route('employer.dashboard')->with('success', 'Company information saved successfully.');
     }
