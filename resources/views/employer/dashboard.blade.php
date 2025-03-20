@@ -10,6 +10,7 @@
             <p>Welcome, {{ Auth::user()->name }}!</p>
             <p>Your email: {{ Auth::user()->email }}</p>
             <a href="{{ route('employer.company') }}" class="btn btn-primary">Manage Company</a>
+            <a href="{{ route('employer.jobs.create') }}" class="btn btn-success mt-3">Post a New Job</a>
         </div>
     </div>
 </div>

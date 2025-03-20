@@ -84,7 +84,8 @@ Route::post('/candidate/profile/update-image', [CandidateProfileController::clas
 Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/company', [CompanyController::class, 'showCompanyForm'])->name('employer.company');
     Route::post('/employer/company', [CompanyController::class, 'storeCompany']);
-
+    Route::get('/jobs/create', [JobListingController::class, 'create'])->name('employer.jobs.create');
+    Route::post('/jobs', [JobListingController::class, 'store'])->name('employer.jobs.store');
     Route::get('/employer/dashboard', function () {
         return view('employer.dashboard');
     })->name('employer.dashboard');
