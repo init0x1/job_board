@@ -6,6 +6,9 @@ use App\Models\JobListing;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Location;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreJobListingRequest;
+use App\Http\Requests\UpdateJobListingRequest;
 
 class JobListingController extends Controller
 {
@@ -123,9 +126,16 @@ class JobListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(JobListing $job)
+    public function showEmployerJob($id)
     {
-        return view('globalPages.jobs.show', compact('job'));
+        $job = JobListing::findOrFail($id);
+        $user = auth()->user();
+        
+        if (!$user->company || $job->company_id != $user->company->id) {
+            return redirect()->route('employer.jobs')->with('error', 'You do not have permission to view this job');
+        }
+        
+        return view('employer.jobs.show', compact('job'));
     }
 
 
@@ -134,40 +144,108 @@ class JobListingController extends Controller
      */
     public function create()
     {
-        //
-    }
+        // get categories and locations 
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $locations = Location::orderBy('name', 'ASC')->get();
+        
+        return view('employer.jobs.create', compact('categories', 'locations'));    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreJobListingRequest $request)
     {
-        //
+        $company = auth()->user()->company; 
+        $location = Location::find($request->location_id);
+        
+        // create job
+        JobListing::create([
+            'user_id' => Auth::id(),
+            'company_id' => $company->id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'responsibilities' => $request->responsibilities,
+            'requirements' => $request->requirements,
+            'category_id' => $request->category_id,
+            'location_id' => $request->location_id,
+            'location' => $location->name, 
+            'work_type' => $request->work_type,
+            'salary_min' => $request->salary_min,
+            'salary_max' => $request->salary_max,
+            'application_deadline' => $request->application_deadline,
+            'status' => 'pending' 
+        ]);
+        
+        return redirect()->route('employer.dashboard')->with('success', 'Job created successfully it will be visible after approval');
     }
 
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JobListing $jobListing)
+    public function edit(JobListing $job)
     {
-        //
+        if ($job->company_id != auth()->user()->company->id) {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        $categories = Category::all();
+        $locations = Location::all();
+    
+        return view('employer.jobs.edit', compact('job', 'categories', 'locations'));
+    }
+    
+    public function update(UpdateJobListingRequest $request, JobListing $job)
+    {
+        if ($job->company_id != auth()->user()->company->id) {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        $job->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'responsibilities' => $request->responsibilities,
+            'requirements' => $request->requirements,
+            'category_id' => $request->category_id,
+            'location_id' => $request->location_id,
+            'work_type' => $request->work_type,
+            'salary_min' => $request->salary_min,
+            'salary_max' => $request->salary_max,
+            'application_deadline' => $request->application_deadline,
+            'status' => 'pending', 
+        ]);
+    
+        return redirect()->route('employer.jobs')->with('success', 'Job updated successfully. It will need to be re-approved.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, JobListing $jobListing)
+    public function companyJobs(Request $request)
     {
-        //
+        $company = auth()->user()->company;
+        $jobs = JobListing::where('company_id', $company->id)
+            ->when($request->status, function($query) use ($request) {
+                return $query->where('status', $request->status);
+            })
+            ->when($request->search, function($query) use ($request) {
+                return $query->where('title', 'like', '%'.$request->search.'%');
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    
+        return view('employer.jobs.index', compact('jobs'));
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JobListing $jobListing)
+    public function destroy(JobListing $job)
     {
-        //
+        if ($job->company_id != auth()->user()->company->id) {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        $job->delete();
+    
+        return redirect()->route('employer.jobs')
+            ->with('success', 'Job deleted successfully.');
     }
     public function applyJob(Request $request, $id)
     {
@@ -187,5 +265,20 @@ class JobListingController extends Controller
         $job->savedJobs()->attach(auth()->id());
 
         return redirect()->back()->with('success', 'Job saved successfully');
+    }
+    public function employerDashboard()
+    {
+        $user = auth()->user();
+        $company = $user->company;
+        
+        if (!$company) {
+            return redirect()->back()->with('error', 'You are not associated with any company');
+        }
+    
+        $jobs = JobListing::where('company_id', $company->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    
+        return view('employer.dashboard', compact('jobs', 'company'));
     }
 }

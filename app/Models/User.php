@@ -67,5 +67,9 @@ public function applications()
     {
         return $this->hasMany(Application::class);
     }
+    public function jobs()
+    {
+        return $this->hasMany(JobListing::class);
+    }
 
 }

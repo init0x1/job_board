@@ -84,10 +84,14 @@ Route::post('/candidate/profile/update-image', [CandidateProfileController::clas
 Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/company', [CompanyController::class, 'showCompanyForm'])->name('employer.company');
     Route::post('/employer/company', [CompanyController::class, 'storeCompany']);
-
-    Route::get('/employer/dashboard', function () {
-        return view('employer.dashboard');
-    })->name('employer.dashboard');
+    Route::get('/jobs/create', [JobListingController::class, 'create'])->name('employer.jobs.create');
+    Route::post('/jobs', [JobListingController::class, 'store'])->name('employer.jobs.store');
+    Route::get('/employer/dashboard', [JobListingController::class, 'employerDashboard'])->name('employer.dashboard');
+    Route::get('/employer/jobs', [JobListingController::class, 'companyJobs'])->name('employer.jobs');
+    Route::get('/employer/jobs/{job}', [JobListingController::class, 'showEmployerJob'])->name('employer.jobs.show');
+    Route::get('/employer/jobs/{job}/edit', [JobListingController::class, 'edit'])->name('employer.jobs.edit');
+    Route::put('/employer/jobs/{job}', [JobListingController::class, 'update'])->name('employer.jobs.update');
+    Route::delete('/employer/jobs/{job}', [JobListingController::class, 'destroy'])->name('employer.jobs.destroy');
 });
 
 // =============================
