@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
     @yield("customeCss")
   </head>
 
@@ -58,10 +59,18 @@
                   <div class="main-menu d-none d-lg-block">
                     <nav>
                       <ul id="navigation">
-                      <li><a href="{{ route('user.job.index') }}">Browse Job</a></li>
-                     {{-- <li><a href="{{ route('user.applications.index') }}">Applications</a></li>
---}}
-                        <li><a href="Employees.html">For Employers</a></li>
+                      <li><a class="hide-employeer" href="{{ route('user.job.index') }}">Browse Job</a></li>
+                      @auth
+                      @if(Auth::user()->role == 'candidate')
+
+                  
+                     <li><a href="{{ route('user.application.index') }}">Applications</a></li>
+                     <li><a href="{{ route('user.application.saved') }}">Saved</a></li>
+                     @elseif(Auth::user()->role == 'employer')
+                     <li class="show-employeer-menu"><a href="{{ route('user.job.index') }}">Jobs</a></li>
+                     @endif
+                      @endauth
+                        <li class="hide-employeer text-white c-ptr hover:text-green-[400]" style="cursor:pointer" @click="showEmployeerPage()">For Employers</li>
                       </ul>
                     </nav>
                   </div>
@@ -69,7 +78,7 @@
                 <div class="col-xl-6 col-lg-6 d-none d-lg-block">
                   <div class="Appointment">
                     <div class="phone_num d-none d-xl-block">
-                    @auth
+                    @auth 
                     <!-- User Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
@@ -94,7 +103,7 @@
                             </li>
                         </ul>
                     </li>
-                @else
+                    @else
                     <!-- Login & Register Links -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
@@ -102,11 +111,15 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
                     </li>
-                @endauth
+              @endauth
                     </div>
                     <div class="d-none d-lg-block">
-                      <a class="boxed-btn3" href="#">Post a Job</a>
-                    </div>
+                      @auth
+                    @if(Auth::user()->role == 'employer')
+                      <li><a  class="boxed-btn3" href="#">Post a Job</a></li>
+                      @endif
+                      @endauth
+                    </div>  
                   </div>
                 </div>
                 <div class="col-12">
@@ -286,5 +299,14 @@
 
     <script src="/js/main.js"></script>
     @yield('customJs')
+    <script>
+      function showEmployeerMenu() {
+        document.querySelector('.show-employeer').classList.toggle('show-employeer-menu');
+        
+        // Hide the "Browse Job" menu item
+        document.querySelector(".hide-employeer").style.display = "none";
+        document.querySelector(".show-employeer").style.display = "block";
+      }
+    </script>
   </body>
 </html>
