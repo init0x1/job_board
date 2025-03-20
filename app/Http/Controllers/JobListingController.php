@@ -125,9 +125,16 @@ class JobListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(JobListing $job)
+    public function showEmployerJob($id)
     {
-        return view('globalPages.jobs.show', compact('job'));
+        $job = JobListing::findOrFail($id);
+        $user = auth()->user();
+        
+        if (!$user->company || $job->company_id != $user->company->id) {
+            return redirect()->route('employer.jobs')->with('error', 'You do not have permission to view this job');
+        }
+        
+        return view('employer.jobs.show', compact('job'));
     }
 
 
@@ -213,5 +220,35 @@ class JobListingController extends Controller
         $job->savedJobs()->attach(auth()->id());
 
         return redirect()->back()->with('success', 'Job saved successfully');
+    }
+    public function employerDashboard()
+    {
+        $user = auth()->user();
+        $company = $user->company;
+        
+        if (!$company) {
+            return redirect()->back()->with('error', 'You are not associated with any company');
+        }
+    
+        $jobs = JobListing::where('company_id', $company->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    
+        return view('employer.dashboard', compact('jobs', 'company'));
+    }
+    public function companyJobs()
+    {
+        $user = auth()->user();
+        $company = $user->company;
+        
+        if (!$company) {
+            return redirect()->back()->with('error', 'You are not associated with any company');
+        }
+    
+        $jobs = JobListing::where('company_id', $company->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+    
+        return view('employer.jobs.index', compact('jobs', 'company'));
     }
 }

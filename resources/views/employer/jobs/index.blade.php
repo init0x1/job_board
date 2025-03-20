@@ -2,16 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h1>Employer Dashboard</h1>
+    <h1>Company Job Listings</h1>
     
     <div class="mb-4">
-        <a href="{{ route('employer.jobs') }}" class="btn btn-primary">View All Company Jobs</a>
-        <a href="{{ route('employer.jobs.create') }}" class="btn btn-success">Create New Job</a>
+        <a href="{{ route('employer.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="{{ route('employer.jobs.create') }}" class="btn btn-primary">Create New Job</a>
     </div>
 
-    <h3>Recent Company Job Listings</h3>
-    
-    @if(!isset($jobs) || $jobs->isEmpty())
+    @if($jobs->isEmpty())
         <div class="alert alert-info">Your company hasn't posted any jobs yet.</div>
     @else
         <div class="table-responsive">
@@ -47,6 +45,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $jobs->links() }}
         </div>
     @endif
 </div>

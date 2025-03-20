@@ -55,4 +55,8 @@ class JobListing extends Model
     {
         return $this->applications()->where('user_id', auth()->id())->exists();
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -86,9 +86,9 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::post('/employer/company', [CompanyController::class, 'storeCompany']);
     Route::get('/jobs/create', [JobListingController::class, 'create'])->name('employer.jobs.create');
     Route::post('/jobs', [JobListingController::class, 'store'])->name('employer.jobs.store');
-    Route::get('/employer/dashboard', function () {
-        return view('employer.dashboard');
-    })->name('employer.dashboard');
+    Route::get('/employer/dashboard', [JobListingController::class, 'employerDashboard'])->name('employer.dashboard');
+    Route::get('/employer/jobs', [JobListingController::class, 'companyJobs'])->name('employer.jobs');
+    Route::get('/employer/jobs/{job}', [JobListingController::class, 'showEmployerJob'])->name('employer.jobs.show');
 });
 
 // =============================
