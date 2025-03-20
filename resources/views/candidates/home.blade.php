@@ -86,9 +86,9 @@
                   <select class="wide" name="location">
                     <!-- <option value="">Select Location</option> -->
                   <option data-display="Location"value="">Location</option>
-                    @foreach($locations as $location)
-                    <option value="{{$location->id}}" {{ request('location') == $location->name ? 'selected' : '' }}>{{$location->name}}</option>
-                    @endforeach
+                  @foreach($locations as $location)
+                    <option value="{{$location->name}}" {{ request('location') == $location->name ? 'selected' : '' }}>{{$location->name}}</option>
+                  @endforeach
                   </select>
                 </div>
               </div>

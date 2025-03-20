@@ -35,7 +35,7 @@ class JobListingController extends Controller
       
           // Search using location
           if (!empty($request->location)) {
-              $jobs->where('location_id', $request->location);
+              $jobs->where('location', $request->location);
           }
           
           // Search using category
