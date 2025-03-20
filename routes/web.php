@@ -89,6 +89,8 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/dashboard', [JobListingController::class, 'employerDashboard'])->name('employer.dashboard');
     Route::get('/employer/jobs', [JobListingController::class, 'companyJobs'])->name('employer.jobs');
     Route::get('/employer/jobs/{job}', [JobListingController::class, 'showEmployerJob'])->name('employer.jobs.show');
+    Route::get('/employer/jobs/{job}/edit', [JobListingController::class, 'edit'])->name('employer.jobs.edit');
+    Route::put('/employer/jobs/{job}', [JobListingController::class, 'update'])->name('employer.jobs.update');
 });
 
 // =============================

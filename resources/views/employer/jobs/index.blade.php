@@ -7,8 +7,24 @@
     <div class="mb-4">
         <a href="{{ route('employer.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
         <a href="{{ route('employer.jobs.create') }}" class="btn btn-primary">Create New Job</a>
-    </div>
-
+        <div class="mb-4">
+            <form action="{{ route('employer.jobs') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control" placeholder="Search jobs..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
     @if($jobs->isEmpty())
         <div class="alert alert-info">Your company hasn't posted any jobs yet.</div>
     @else
@@ -40,6 +56,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('employer.jobs.show', $job->id) }}" class="btn btn-sm btn-info">View</a>
+                                <a href="{{ route('employer.jobs.edit', $job->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             </td>
                         </tr>
                     @endforeach
