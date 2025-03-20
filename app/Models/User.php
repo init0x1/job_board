@@ -51,7 +51,28 @@ class User extends Authenticatable
     /**
      * Check if user is an admin.
      */
-    
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user is an employer.
+     */
+    public function isEmployer(): bool
+    {
+        return $this->role === 'employer';
+    }
+
+    /**
+     * Check if user is a candidate.
+     */
+    public function isCandidate(): bool
+    {
+        return $this->role === 'candidate';
+    }
+
 
 
     public function profile()
