@@ -198,10 +198,6 @@
                 </div>
                 <div class="jobs_right">
                   <div class="apply_now">
-                    <a class="heart_mark" href="#">
-                      <i class="ti-heart"></i>
-                    </a>
-
                     <a href="{{ route('user.job.show', $job->id) }}" class="boxed-btn3">Apply Now</a>
                   </div>
                   <div class="date">
@@ -218,7 +214,7 @@
     </div>
     <!-- job_listing_area_end  -->
     <!-- featured_candidates_area_start  -->
-    <div class="featured_candidates_area">
+    {{--<div class="featured_candidates_area">
       <div class="container">
       <div class="row align-items-center mb-40">
           <div class="col-lg-6 col-md-6">
@@ -252,7 +248,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
     <!-- featured_candidates_area_end  -->
 
      <div class="top_companies_area">
@@ -277,11 +273,26 @@
               <div class="thumb">
          
 
-              @if ($company->logo_path)
+              {{--@if ($company->logo_path)
                         <img src="{{ asset('storage/' . $company->logo_path) }}" class="rounded mb-3" width="150">
                     @else
                         <img src="{{ asset('/img/svg_icon/1.svg') }}" class="rounded mb
                         -3" width="150">
+                    @endif--}}
+                    @php
+                      $storagePath = public_path('storage/' . $company->logo_path);
+                      $publicPath = public_path( $company->logo_path);
+
+                      if (!empty($company->logo_path) && file_exists($storagePath)) {
+                          $imageUrl = asset('storage/' . $company->logo_path);
+                      } elseif (file_exists($publicPath)) {
+                          $imageUrl = asset( $company->logo_path);
+                      }
+                   @endphp
+                   @if ($company->logo_path)
+                   <img src="{{ $imageUrl }}" class="rounded mb-3" width="150">
+                   @else
+                     <p>No Image</p>
                     @endif
               </div>
               <a href="{{ route('user.company.show', $company) }}">
