@@ -75,14 +75,10 @@
                               </div>  <div class="pt-3 text-end">
                               @if (Auth::check())
                                   @if(!$job->isAppliedByUser())
-                                          <form class="
-                                          
-                                              " action="{{ route('user.applyJob', ['id' => $job->id]) }}" method="POST">
-                                              @csrf
-                                              <button type="submit" class="btn btn-success">
-                                              Apply Now
-                                              </button>
-                                          </form>
+                                  <a href="{{ route('candidate.createApplication', ['job_id' => $job->id]) }}" class="btn btn-success">
+                                        Apply Now
+                                    </a>
+
                                           @else
                                               <button class="applied text-success disabled btn-light btn">
                                                   Already Applied

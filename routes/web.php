@@ -18,10 +18,21 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CandidateProfileController;
 
 // =============================
-// ✅ Public Routes
+// ✅ Public Routes appear for login and non login users
 // =============================
+// Home page
 Route::get('/', [HomeController::class, 'index'])->name('candidates.home');
-
+// company index , show Routes
+Route::get('/user/company/{id}', [CompanyController::class, 'show_user'])->name('user.company.show');
+Route::get('/user/company', [CompanyController::class, 'index_user'])->name('user.company.index');
+// Candidate index , show Routes
+Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
+Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
+// job index , show Routes
+Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');
+Route::get('/user/job/{id}', [JobListingController::class, 'show_user'])->name('user.job.show');
+// category index , show Routes
+Route::get('/user/category', [CategoryController::class, 'index_user'])->name('user.category.index');
 
 // =============================
 // ✅ User Authentication Routes
@@ -60,22 +71,31 @@ Route::get('/dashboard', function () {
 // =============================
 // ✅ Candidate Routes
 // =============================
-Route::middleware(['auth', 'role:candidate'])->group(function () {
+Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(function () {
     Route::get('/candidate/skills', [SkillsController::class, 'create'])->name('candidate.skills.create');
 
     // Store skills after form submission
-    Route::post('/candidate/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
-    Route::get('/candidate/skills', [CandidateProfileController::class, 'showSkills'])->name('candidate.skills');
-    Route::get('/candidate/profile', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
-    Route::post('/candidate/profile', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
-    Route::get('/candidate/profile', [CandidateProfileController::class, 'show'])->name('candidate.profile');
-Route::put('/candidate/profile/update', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
-Route::post('/candidate/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
+    Route::post('/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
+    Route::get('/skills', [CandidateProfileController::class, 'showSkills'])->name('candidate.skills');
+    Route::get('/profile', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
+    Route::post('/profile', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+    Route::get('/profile', [CandidateProfileController::class, 'show'])->name('candidate.profile');
+    Route::put('/profile/update', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
+    Route::post('/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
 
 
-    Route::get('/candidate/dashboard', function () {
+    Route::get('/dashboard', function () {
         return view('candidate.dashboard');
     })->name('candidate.dashboard');
+
+    //application of candidtes index , show Routes, edit, create or apply , delete
+    Route::get('/application', [ApplicationController::class, 'showUserApplications'])->name('candidate.application.index');
+    Route::get('/application/{id}', [ApplicationController::class,  'showSingleUserApplication'])->name('candidate.application.show');
+    Route::get('/application/create/{job_id}', [ApplicationController::class, 'create'])->name('candidate.createApplication');
+    Route::post('/application/create/{job_id}', [ApplicationController::class, 'store'])->name('candidate.storeApplication');
+    Route::get('/application/edit/{id}', [ApplicationController::class, 'edit'])->name('candidate.application.edit');
+    Route::put('/application/{id}', [ApplicationController::class, 'update'])->name('candidate.application.update');
+    Route::delete('/application/{id}', [ApplicationController::class, 'destroy'])->name('candidate.application.destroy');
 });
 
 // =============================
@@ -138,45 +158,17 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/skills', [SkillsController::class, 'store']);
     Route::delete('/skills/{skill}', [SkillsController::class, 'destroy']);
 });
-
 // =============================
 // ✅ Profile Management (For All Users)
 // =============================
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
-// =========================================================
-// Cadidantes Home page appear for login and non login users
-// =========================================================
-// Route::resource('company',CompanyController::class);
-// company index , show Routes
-
-Route::get('/user/company/{id}', [CompanyController::class, 'show_user'])->name('user.company.show');
-Route::get('/user/company', [CompanyController::class, 'index_user'])->name('user.company.index');
-// Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
-
-// Candidate index , show Routes
-Route::get('/user/candidate', [CandidateController::class, 'index_user'])->name('user.candidate.index');
-Route::get('/user/candidate/{id}', [CandidateController::class, 'show_user'])->name('user.candidate.show');
 
 
-// job index , show Routes
-Route::get('/user/job', [JobListingController::class, 'index_user'])->name('user.job.index');
-Route::get('/user/job/{id}', [JobListingController::class, 'show_user'])->name('user.job.show');
 
-// category index , show Routes
-
-Route::get('/user/category', [CategoryController::class, 'index_user'])->name('user.category.index');
-// Route::get('/user/category/{id}', [CategoryController::class, 'show_user'])->name('user.category.show');
-
-//application index , show Routes
-// Route::get('/user/application', [ApplicationController::class, 'index_user'])->name('user.application.index');
-// Route::get('/user/application/{id}', [ApplicationController::class, 'show_user'])->name('user.application.show');
-// Route::get('/job/apply/{id}', [ApplicationController::class, 'applyJob'])->name('job.apply');
-
-// Apply job Route
-Route::post('/apply-job/{id}',[JobListingController::class,'applyJob'])->name('user.applyJob');
-Route::post('/save-job/{id}',[JobListingController::class,'saveJob'])->name('user.saveJob');
 require __DIR__.'/auth.php';

@@ -259,7 +259,7 @@ class JobListingController extends Controller
 
         return redirect()->back()->with('success', 'Application submitted successfully');
     }
-    public function saveJob($id)
+    public function saveJob($id)//
     {
         $job = JobListing::find($id);
         $job->savedJobs()->attach(auth()->id());
