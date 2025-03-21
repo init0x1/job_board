@@ -1,4 +1,4 @@
-@extends("candidates.layouts.app_normal")
+@extends("candidates.layouts.app")
 @section('customeCss')
   <style>
     /* Custom CSS 
@@ -17,18 +17,8 @@
 @endsection
 @section("main")
 @if($job)
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>Job Application</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="job_details_area">
+    
+    <div class="job_details_area" style="margin-top: 80px !important;">
 
         <div class="container">
         <div class="row">
