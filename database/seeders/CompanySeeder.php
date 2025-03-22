@@ -23,7 +23,7 @@ class CompanySeeder extends Seeder
         foreach ($companies as $company) {
             Company::create([
                 'name' => $company,
-                'logo_path' => "img/svg_icon/2.svg", // Default logo
+                'logo_path' => "company_logos/company_defualt_logo.svg", // Default logo
                 'website' => "https://www.website.com",
                 'description' => "company description",
                 'industry' => "software",
