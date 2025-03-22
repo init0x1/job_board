@@ -270,30 +270,20 @@
 
           <div class="col-lg-4 col-xl-3 col-md-6">
             <div class="single_company">
-              <div class="thumb">
-         
-
-              {{--@if ($company->logo_path)
-                        <img src="{{ asset('storage/' . $company->logo_path) }}" class="rounded mb-3" width="150">
-                    @else
-                        <img src="{{ asset('/img/svg_icon/1.svg') }}" class="rounded mb
-                        -3" width="150">
-                    @endif--}}
+              <div class="thumb " style="width:80px;height:80px;">
                     @php
                       $storagePath = public_path('storage/' . $company->logo_path);
                       $publicPath = public_path( $company->logo_path);
 
                       if (!empty($company->logo_path) && file_exists($storagePath)) {
                           $imageUrl = asset('storage/' . $company->logo_path);
-                      } elseif (file_exists($publicPath)) {
+                      } elseif (!empty($company->logo_path) && file_exists($publicPath)) {
                           $imageUrl = asset( $company->logo_path);
-                      }
+                      }else {
+                        $imageUrl =asset('storage/' .'company_logos/company_defualt_logo.svg' );
+                      }      
                    @endphp
-                   @if ($company->logo_path)
-                   <img src="{{ $imageUrl }}" class="rounded mb-3" width="150">
-                   @else
-                     <p>No Image</p>
-                    @endif
+                   <img src="{{ $imageUrl }}" class="rounded mb-3 w-100 h-100">
               </div>
               <a href="{{ route('user.company.show', $company) }}">
               <h3>{{ $company->name }}</h3></a>
