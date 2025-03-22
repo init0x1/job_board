@@ -28,7 +28,18 @@
                     <div class="col-md-6 col-lg-3">
                         <div class="single_candidates text-center">
                             <div class="thumb">
-                                <img src="{{ $company->logo_path ? asset('storage/' . $company->logo_path) : asset('/img/svg_icon/1.svg') }}" alt="{{ $company->name }}">
+                                @php
+                                    $storagePath = public_path('storage/' . $company->logo_path);
+                                    $publicPath = public_path( 'img/' . $company->logo_path);
+                                    if (!empty($company->logo_path) && file_exists($storagePath)) {
+                                        $imageUrl = asset('storage/' . $company->logo_path);
+                                    } elseif (!empty($company->logo_path) && file_exists($publicPath)) {
+                                        $imageUrl = asset( 'img/' .$company->logo_path);
+                                    }else {
+                                        $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                                    }      
+                                @endphp
+                                <img src="{{ $imageUrl }}" class="rounded mb-3 w-100 h-100">
                             </div>
 
                             <a href="{{ route('user.company.show', $company) }}">

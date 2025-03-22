@@ -164,7 +164,25 @@
                                         <div class="single_jobs white-bg d-flex justify-content-between">
                                             <div class="jobs_left d-flex align-items-center">
                                                 <div class="thumb">
-                                                    <img src="/img/svg_icon/1.svg" alt="">
+                                                    
+                                                    @if($job->company && $job->company->logo_path)
+                                                        @php
+                                                        $storagePath = public_path('storage/' . $job->company->logo_path);
+                                                        $publicPath = public_path('img/'.$job->company->logo_path);
+
+                                                        if (!empty($$job->company->logo_path) && file_exists($storagePath)) {
+                                                            $imageUrl = asset('storage/' . $job->company->logo_path);
+                                                        } elseif (!empty($job->company->logo_path) && file_exists($publicPath)) {
+                                                            $imageUrl = asset('img/' .$job->company->logo_path);
+                                                        }else {
+                                                            $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                                                        }      
+                                                        @endphp
+                                            
+                                                    <img src="{{ $imageUrl }}" class=" w-100 h-100">
+                                                    @else 
+                                                        <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" alt="company logo" />
+                                                    @endif
                                                 </div>
                                                 <div class="jobs_conetent">
                                                     <a href="{{ route('user.job.show', $job->id) }}"><h4>{{ $job->title }}</h4></a>
