@@ -27,7 +27,18 @@
                 <div class="col-lg-4">
                     <div class="company_profile" style="height:85%">
                      <div class="" style="width:90%; height:100%">
-                        <img class="img-full w-100 h-100" src="{{ $company->logo_path ? asset('storage/' . $company->logo_path) : asset('/img/svg_icon/1.svg') }}" alt="{{ $company->name }}">
+                       @php
+                            $storagePath = public_path('storage/' . $company->logo_path);
+                            $publicPath = public_path( 'img/' . $company->logo_path);
+                            if (!empty($company->logo_path) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $company->logo_path);
+                            } elseif (!empty($company->logo_path) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'img/' .$company->logo_path);
+                            }else {
+                                $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                            }      
+                        @endphp
+                        <img src="{{ $imageUrl }}" class="img-full w-100 h-100">
 
                      </div> <h4>{{ $company->name }}</h4>
                     </div>
@@ -36,12 +47,7 @@
                     <div class="company_details h-100">
                        
                         <h4>website</h4>
-                       {{--
-                           $table->string('website')->nullable();
-                           $table->text('description')->nullable();
-                           $table->string('industry')->nullable();
-                           $table->integer('established_year')->nullable();
-                         --}}
+
                         <p>{{ $company->website ?? 'No website provide' }}</p>
                         <h4>description</h4>
                         <p>{{ $company->description ?? 'No description provide' }}</p>
