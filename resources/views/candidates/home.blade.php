@@ -179,7 +179,25 @@
               <div class="single_jobs white-bg d-flex justify-content-between">
                 <div class="jobs_left d-flex align-items-center">
                 <div class="thumb">
-                    <img src="{{ asset($job->company && $job->company->logo_path ? $job->company->logo_path : 'img/svg_icon/1.png') }}" 
+                  @if($job->company && $job->company->logo_path)
+                    @php
+                      $storagePath = public_path('storage/' . $job->company->logo_path);
+                      $publicPath = public_path( $job->company->logo_path);
+
+                      if (!empty($$job->company->logo_path) && file_exists($storagePath)) {
+                          $imageUrl = asset('storage/' . $job->company->logo_path);
+                      } elseif (!empty($job->company->logo_path) && file_exists($publicPath)) {
+                          $imageUrl = asset($job->company->logo_path);
+                      }else {
+                        $imageUrl =asset('storage/' .'company_logos/company_defualt_logo.svg' );
+                      }      
+                    @endphp
+                   <img src="{{ $imageUrl }}" class="rounded mb-3 w-100 h-100">
+                  @else 
+                    <img src="{{asset('storage/' .'company_logos/company_defualt_logo.svg' )}}" alt="company logo" />
+                  @endif
+  
+                   <img src="{{ asset($job->company && $job->company->logo_path ? $job->company->logo_path : 'img/svg_icon/1.png') }}" 
                         alt="{{ $job->company->name ?? 'Company Logo' }}" />
                 </div>
 
