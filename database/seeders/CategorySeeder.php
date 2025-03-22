@@ -24,6 +24,7 @@ class CategorySeeder extends Seeder
             foreach ($categories as $category) {
                 Category::create([
                     'name' => $category,
+                    'image' => '/img/category/It_and_software.webp'
                 ]);
             }
             
