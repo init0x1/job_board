@@ -77,7 +77,7 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
     // Store skills after form submission
     Route::post('/skills', [SkillsController::class, 'store'])->name('candidate.skills.store');
     Route::get('/skills', [CandidateProfileController::class, 'showSkills'])->name('candidate.skills');
-    Route::get('/profile', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
+    Route::get('/profile/edit', [CandidateProfileController::class, 'edit'])->name('candidate.profile.edit');
     Route::post('/profile', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');
     Route::get('/profile', [CandidateProfileController::class, 'show'])->name('candidate.profile');
     Route::put('/profile/update', [CandidateProfileController::class, 'update'])->name('candidate.profile.update');

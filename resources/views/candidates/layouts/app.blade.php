@@ -97,7 +97,7 @@
           <ul class="navbar-nav">
             
            <li class="nav-item">
-            <li><a class="hide-employeer nav-link" href="{{ route('user.job.index') }}">Browse Job</a>
+            <li><a class="hide-employeer nav-link" href="{{ route('user.job.index') }}">Explore</a>
             </li>
              @auth
               @if(Auth::user()->role == 'candidate')
@@ -144,7 +144,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                <a class="dropdown-item" href="{{ route('candidate.profile') }}">
                                     <i class="bi bi-person-circle me-2"></i> Profile
                                 </a>
                             </li>
