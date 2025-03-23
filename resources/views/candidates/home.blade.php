@@ -4,6 +4,7 @@
    Job Board
 @endsection
 @section("customeCss")
+
 <style>
   .catagory_area {
      border-radius: 3px;
@@ -240,50 +241,14 @@
       </div>
     </div>
     <!-- job_listing_area_end  -->
-    <!-- featured_candidates_area_start  -->
-    {{--<div class="featured_candidates_area">
-      <div class="container">
-      <div class="row align-items-center mb-40">
-          <div class="col-lg-6 col-md-6">
-            <div class="section_title">
-              <h3>Featured Candidates</h3>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6">
-            <div class="brouse_job text-right">
-              <a  href="{{ route('user.candidate.index') }}" class="boxed-btn4">Browse More Candidates</a>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="candidate_active owl-carousel">
-            @foreach($jobCandidates as $candidate)
+<!-- companies_area_start -->
 
-              <div class="single_candidates text-center">
-                <div class="thumb">
-                  <!-- image from profile -->
-                  <img src="{{ asset( $candidate? $candidate->image : '/img/candiateds/1.png') }}" alt="" />
-                  </div>
-                <a href="{{ route('user.candidate.show',$candidate->id) }}"><h4>{{$candidate->name}}</h4></a>
-                <p>{{ $candidate->profile ? $candidate->profile->job_title : 'Not Provided' }}</p>
-               
-              </div>
-              @endforeach
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> --}}
-    <!-- featured_candidates_area_end  -->
-
-     <div class="top_companies_area">
+<div class="top_companies_area">
       <div class="container">
         <div class="row align-items-center mb-40">
           <div class="col-lg-6 col-md-6">
             <div class="section_title">
-              <h3>Top Companies</h3>
+              <h3>Join Egypt's Top Companies</h3>
             </div>
           </div>
           <div class="col-lg-6 col-md-6">
@@ -323,5 +288,10 @@
         </div>
       </div>
     </div>
+    <!-- companies_area_end -->
 
 @endsection
+@section("customJs")
+    <script src="/js/header_scroll.js"></script>
+    @endsection
+

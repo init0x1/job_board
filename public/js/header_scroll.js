@@ -35,7 +35,7 @@ const registerBtn = document.querySelector(
 function updateNavbarStyles() {
     const scrolled = window.scrollY;
 
-    if (scrolled <= 500) {
+    if (scrolled <= 200) {
         navbar.style.backgroundColor = originalNavbarStyles.backgroundColor;
         navbar.style.boxShadow = originalNavbarStyles.boxShadow;
         logo.style.color = "#fff";
@@ -76,6 +76,7 @@ function updateNavbarStyles() {
             });
             postBtn.addEventListener("mouseleave", () => {
                 postBtn.style.backgroundColor = "";
+                Color = "";
                 postBtnspan.style.color = "";
             });
         }

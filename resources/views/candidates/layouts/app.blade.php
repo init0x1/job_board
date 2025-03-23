@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Arabic:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <!-- bootstarp style -->
-
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="/css/magnific-popup.css" />
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
@@ -38,6 +38,12 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/css/header.css" />
     <!-- categories area style -->
     <link rel="stylesheet" type="text/css" media="screen" href="/css/category_area.css" />
+
+    <!-- Styles -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> -->
+
+    <link href="{{ asset('../../../css/app.css') }}" rel="stylesheet">
 
   @yield('customeCss')
   </head>
@@ -92,6 +98,7 @@
         </button>
         <div class="collapse navbar-collapse w-75" id="navbarNav">
           <ul class="navbar-nav">
+            
            <li class="nav-item">
             <li><a class="hide-employeer nav-link" href="{{ route('user.job.index') }}">Browse Job</a>
             </li>
@@ -122,12 +129,41 @@
               </a>
             </li>
             <span class="separtor"> </span>
-            <li class="nav-item">
-              <a class="nav-link login-btn"  href="{{ route('login') }}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link register-btn"  href="{{ route('register') }}">Register</a>
-            </li>
+           
+
+            @auth
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
+                                alt="Profile" class="rounded-circle "  style="padding-right: 5px;" width="40" height="40">
+                            <span>{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="bi bi-person-circle me-2"></i> Profile
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @else
+                <li class="nav-item">
+                  <a class="nav-link login-btn {{ request()->routeIs('login') ? 'active' : '' }}"   href="{{ route('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link register-btn {{ request()->routeIs('register') ? 'active' : '' }}"   href="{{ route('register') }}">Register</a>
+                </li>
+                @endauth
           </ul>
         </div>
       </div>
@@ -290,7 +326,10 @@
 
 
     <script src="/js/main.js"></script>
-    <script src="/js/header_scroll.js"></script>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('../../../js/app.js') }}" defer></script>
     @yield('customJs')
     <script>
 
