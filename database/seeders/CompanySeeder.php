@@ -14,16 +14,34 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         $companies = [
-            "Valeo", "Siemens", "Avelabs", "Luxfort", "Link Development",
-            "Etisalat", "Huawei", "Samsung", "Microsoft", "Facebook", "Vois", 
-            "Google", "Axios", "We", "Afaqy", "Apple", "IBM", "Placeholder", 
-            "Foodics", "Daftra"
+            ['name' => "Valeo", 'logo' => "company_logos/valeo.png"],
+            ['name' => "Siemens", 'logo' => "company_logos/siemens.png"],
+            ['name' => "Avelabs", 'logo' => "company_logos/avelabs.png"],
+            ['name' => "Luxfort", 'logo' => "company_logos/luxfort.png"],
+            ['name' => "Link Development", 'logo' => "company_logos/link_development.jpeg"],
+            ['name' => "Etisalat", 'logo' => "company_logos/etisalat.png"],
+            ['name' => "Huawei", 'logo' => "company_logos/huawei.png"],
+            ['name' => "Samsung", 'logo' => "company_logos/samsung.png"],
+            ['name' => "Microsoft", 'logo' => "company_logos/microsoft.png"],
+            ['name' => "Facebook", 'logo' => "company_logos/Facebook.png"],
+            ['name' => "Vois", 'logo' => "company_logos/vois.jpeg"],
+            ['name' => "Google", 'logo' => "company_logos/Google.png"],
+            ['name' => "Axios", 'logo' => "company_logos/axios.png"],
+            ['name' => "We", 'logo' => "company_logos/we.png"],
+            ['name' => "Afaqy", 'logo' => "company_logos/afaqy.png"],
+            ['name' => "Apple", 'logo' => "company_logos/apple.png"],
+            ['name' => "IBM", 'logo' => "company_logos/ibm.png"],
+            ['name' => "Placeholder", 'logo' => "company_logos/placeholder.png"],
+            ['name' => "Foodics", 'logo' => "company_logos/foodics.png"],
+            ['name' => "Daftra", 'logo' => "company_logos/daftra.png"],
+            ['name' => "xceed", 'logo' => "company_logos/xceed.png"]
+
         ];
 
         foreach ($companies as $company) {
             Company::create([
-                'name' => $company,
-                'logo_path' => "company_logos/company_defualt_logo.svg", // Default logo
+                'name' => $company['name'],
+                'logo_path' => $company['logo'], // Use the logo from the array
                 'website' => "https://www.website.com",
                 'description' => "company description",
                 'industry' => "software",
