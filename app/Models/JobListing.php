@@ -21,6 +21,8 @@ class JobListing extends Model
         'requirements',
         'location',
         'work_type',
+        'salary_min',
+        'salary_max',
         'application_deadline',
         'status',
     ];

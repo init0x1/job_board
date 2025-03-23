@@ -21,10 +21,10 @@ class JobListingController extends Controller
           $categories = Category::orderBy('name', 'ASC')->get();
           $jobTypes = ['remote', 'hybrid', 'onsite']; // Job types are static
           $locations = Location::orderBy('name', 'ASC')->get();
-      
+
           // Base Query
           $jobs = JobListing::query()->where('status', 'approved')->where('application_deadline', '>=', now());
-      
+
           // Search using keyword
           if (!empty($request->keyword)) {
               $jobs->where(function ($query) use ($request) {
@@ -32,22 +32,22 @@ class JobListingController extends Controller
                         ->orWhere('description', 'like', '%' . $request->keyword . '%');
               });
           }
-      
+
           // Search using location
           if (!empty($request->location)) {
               $jobs->where('location', $request->location);
           }
-          
+
           // Search using category
           if (!empty($request->category)) {
               $jobs->where('category_id', $request->category);
           }
-      
+
           // Search using Work Type
           if (!empty($request->work_type)) {
               $jobs->where('work_type', $request->work_type);
           }
-      
+
           // Search using Salary Range
           if (!empty($request->min_salary)) {
               $jobs->where('salary_min', '>=', $request->min_salary);
@@ -55,17 +55,17 @@ class JobListingController extends Controller
           if (!empty($request->max_salary)) {
               $jobs->where('salary_max', '<=', $request->max_salary);
           }
-          
+
           // Search using Job Experience
           if (!empty($request->experience)) {
               $jobs->where('experience_level', $request->experience);
           }
-      
+
           // Search using Job Nature
           if (!empty($request->job_nature)) {
               $jobs->where('job_nature', $request->job_nature);
           }
-      
+
           // Filter by Date Posted
           if (!empty($request->date_posted)) {
               if ($request->date_posted == '24_hours') {
@@ -76,7 +76,7 @@ class JobListingController extends Controller
                   $jobs->where('created_at', '>=', now()->subMonth());
               }
           }
-      
+
           // Sorting
           if (!empty($request->sort)) {
               if ($request->sort == '0') {
@@ -87,30 +87,30 @@ class JobListingController extends Controller
           } else {
               $jobs->orderBy('created_at', 'DESC'); // Default sorting
           }
-      
+
           $jobs = $jobs->paginate(10);
-      
+
           return view('globalPages.jobs.index', [
               'categories' => $categories,
               'jobs' => $jobs,
               'locations' => $locations
           ]);
       }
-      
 
 
-    
+
+
         /**
     * Display the specified resource.
     */
     public function show_user($id)
     {
         $job = JobListing::find($id); // Fetch job by ID
-    
+
         if (!$job) {
             return redirect()->route('user.job.index')->with('error', 'Job not found');
         }
-    
+
         return view('globalPages.jobs.show', compact('job'));
     }
 
@@ -130,11 +130,11 @@ class JobListingController extends Controller
     {
         $job = JobListing::findOrFail($id);
         $user = auth()->user();
-        
+
         if (!$user->company || $job->company_id != $user->company->id) {
             return redirect()->route('employer.jobs')->with('error', 'You do not have permission to view this job');
         }
-        
+
         return view('employer.jobs.show', compact('job'));
     }
 
@@ -144,21 +144,41 @@ class JobListingController extends Controller
      */
     public function create()
     {
-        // get categories and locations 
+        // get categories and locations
         $categories = Category::orderBy('name', 'ASC')->get();
         $locations = Location::orderBy('name', 'ASC')->get();
-        
+
         return view('employer.jobs.create', compact('categories', 'locations'));    }
+
+
+
+    //format the salary
+    private function formatSalary($salary)
+    {
+        if (is_numeric($salary)) {
+
+            return round((float)$salary, 2);
+        }
+        return null;
+    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreJobListingRequest $request)
     {
-        $company = auth()->user()->company; 
+        $company = auth()->user()->company;
         $location = Location::find($request->location_id);
-        
-        // create job
+
+        // parse the salary
+        $salaryMin = $this->formatSalary($request->salary_min);
+        $salaryMax = $this->formatSalary($request->salary_max);
+        if ($salaryMin !== null && $salaryMax !== null && $salaryMin > $salaryMax) {
+            return redirect()->back()->withErrors(['salary_min' => 'Minimum salary must be less than or equal to maximum salary.'])->withInput();
+        }
+
+        // Create job
         JobListing::create([
             'user_id' => Auth::id(),
             'company_id' => $company->id,
@@ -168,17 +188,16 @@ class JobListingController extends Controller
             'requirements' => $request->requirements,
             'category_id' => $request->category_id,
             'location_id' => $request->location_id,
-            'location' => $location->name, 
+            'location' => $location->name,
             'work_type' => $request->work_type,
-            'salary_min' => $request->salary_min,
-            'salary_max' => $request->salary_max,
+            'salary_min' => $salaryMin,
+            'salary_max' => $salaryMax,
             'application_deadline' => $request->application_deadline,
-            'status' => 'pending' 
+            'status' => 'pending'
         ]);
-        
-        return redirect()->route('employer.dashboard')->with('success', 'Job created successfully it will be visible after approval');
-    }
 
+        return redirect()->route('employer.dashboard')->with('success', 'Job created successfully. It will be visible after approval.');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -188,19 +207,24 @@ class JobListingController extends Controller
         if ($job->company_id != auth()->user()->company->id) {
             abort(403, 'Unauthorized action.');
         }
-    
+
         $categories = Category::all();
         $locations = Location::all();
-    
+
         return view('employer.jobs.edit', compact('job', 'categories', 'locations'));
     }
-    
+
     public function update(UpdateJobListingRequest $request, JobListing $job)
     {
         if ($job->company_id != auth()->user()->company->id) {
             abort(403, 'Unauthorized action.');
         }
-    
+        $salaryMin = $this->formatSalary($request->salary_min);
+        $salaryMax = $this->formatSalary($request->salary_max);
+        if ($salaryMin !== null && $salaryMax !== null && $salaryMin > $salaryMax) {
+            return redirect()->back()->withErrors(['salary_min' => 'Minimum salary must be less than or equal to maximum salary.'])->withInput();
+        }
+
         $job->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -209,12 +233,12 @@ class JobListingController extends Controller
             'category_id' => $request->category_id,
             'location_id' => $request->location_id,
             'work_type' => $request->work_type,
-            'salary_min' => $request->salary_min,
-            'salary_max' => $request->salary_max,
+            'salary_min' => $salaryMin,
+            'salary_max' => $salaryMax,
             'application_deadline' => $request->application_deadline,
-            'status' => 'pending', 
+            'status' => 'pending',
         ]);
-    
+
         return redirect()->route('employer.jobs')->with('success', 'Job updated successfully. It will need to be re-approved.');
     }
 
@@ -230,7 +254,7 @@ class JobListingController extends Controller
             })
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-    
+
         return view('employer.jobs.index', compact('jobs'));
     }
     /**
@@ -241,9 +265,9 @@ class JobListingController extends Controller
         if ($job->company_id != auth()->user()->company->id) {
             abort(403, 'Unauthorized action.');
         }
-    
+
         $job->delete();
-    
+
         return redirect()->route('employer.jobs')
             ->with('success', 'Job deleted successfully.');
     }
@@ -270,15 +294,15 @@ class JobListingController extends Controller
     {
         $user = auth()->user();
         $company = $user->company;
-        
+
         if (!$company) {
             return redirect()->back()->with('error', 'You are not associated with any company');
         }
-    
+
         $jobs = JobListing::where('company_id', $company->id)
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-    
+
         return view('employer.dashboard', compact('jobs', 'company'));
     }
 }

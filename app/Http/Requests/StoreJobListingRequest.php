@@ -16,13 +16,13 @@ class StoreJobListingRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'responsibilities' => 'required|string', 
-            'requirements' => 'required|string', 
+            'responsibilities' => 'required|string',
+            'requirements' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'location_id' => 'required|exists:locations,id',
             'work_type' => 'required|in:remote,hybrid,onsite',
-            'salary_min' => 'nullable|numeric',
-            'salary_max' => 'nullable|numeric',
+            'salary_min' => 'nullable|numeric|min:0',
+            'salary_max' => 'nullable|numeric|min:0|gte:salary_min',
             'application_deadline' => 'nullable|date|after:today'
         ];
     }
