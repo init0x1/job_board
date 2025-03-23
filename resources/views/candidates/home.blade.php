@@ -3,124 +3,134 @@
 @section("title")
    Job Board
 @endsection
+@section("customeCss")
+<style>
+  .catagory_area {
+     border-radius: 3px;
+    background-color: rgba(0,0,0,0.3);
+   
 
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 20px 0;
+    margin: 40px 0;
+
+}
+  .catagory_area select , .category_ares input {
+    color:#666;  
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+  .catagory_area .cat_search .single_input select.wide {
+    height: 50px !important;
+    border: 1px solid #e8e8e8 !important;  
+    width: 100%;
+    padding: 15px;
+    outline: 0;
+    border: 0;
+    border-radius: 5px;
+}
+
+.nice-select .list {
+
+  z-index: 9999999 !important;
+  height:200px
+}
+
+
+</style>
+@endsection
 
 
 @section("main")
    
-    <!-- slider_area_start -->
-    <div class="slider_area">
-      <div class="single_slider d-flex align-items-center slider_bg_1">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-7 col-md-6">
-              <div class="slider_text">
-                <h5
-                  class="wow fadeInLeft"
-                  data-wow-duration="1s"
-                  data-wow-delay=".2s"
-                >
-                  4536+ Jobs listed
-                </h5>
-                <h3
-                  class="wow fadeInLeft"
-                  data-wow-duration="1s"
-                  data-wow-delay=".3s"
-                >
-                  Find your Dream Job
-                </h3>
-                <p
-                  class="wow fadeInLeft"
-                  data-wow-duration="1s"
-                  data-wow-delay=".4s"
-                >
-                  We provide online instant cash loans with quick approval that
-                  suit your term length
-                </p>
-                <div
-                  class="sldier_btn wow fadeInLeft"
-                  data-wow-duration="1s"
-                  data-wow-delay=".5s"
-                >
-                  <a href="#" class="boxed-btn3">Explore Now</a>
+    <!-- header_area_end -->
+    <header>
+        <div class="position-relative">
+      <div class="">
+        <img
+          style="width: 100%; height: 100%"
+          src="/img/hero.webp"
+          alt=""
+        />
+        <div class="header-overlay postion-relative"></div>
+        <div class="content text-left">
+          <div class="container " style="padding-left: 112px;
+    padding-right: 112px;">
+          <div class="paragrphs " style="padding-top:150px">
+            <h1 class="main-title" style="opacity: 1">
+              Find the Best Jobs in Egypt
+            </h1>
+            <h2 class="">
+              Searching for vacancies & career opportunities? WUZZUF helps you
+              in your job search in Egypt
+            </h2>
+          </div>
+          <div class=" catagory_area banner-content">
+            <!-- catagory_area -->
+            <div class="container">
+              <form method="GET" action="{{ route('user.job.index') }}">
+
+                  <div class="row cat_search mb-0">
+                    <div class="col-lg-3 col-md-4">
+                      <div class="single_input">
+                        <input type="text" name="keyword" placeholder="Search keyword">
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                      <div class="single_input">
+                        <select class="wide" name="category">
+                          <option value="" {{ request('category') == '' ? 'selected' : '' }}>All Categories</option>
+                          @foreach($categories as $category)
+                          <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                      <div class="single_input">
+                        <select class="wide" name="location">
+                          <!-- <option value="">Select Location</option> -->
+                        <option data-display="Location"value="">Location</option>
+                        @foreach($locations as $location)
+                          <option value="{{$location->name}}" {{ request('location') == $location->name ? 'selected' : '' }}>{{$location->name}}</option>
+                        @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                      <div class="job_btn">
+                        <button type="submit" class="w-100" style="
+                        border-color: #80B2FF;
+                        background-color: rgb(0, 8, 217);
+                        font-family:'Open Sans', sans-serif ;
+                        font-style:normal;
+                        font-weight:400;
+                        color:#fff;
+                        font-size:18px;
+                        line-height: 32px;
+                        padding: 10px 24px;
+                        outline: none;
+                        border: none;
+                        cursor: pointer;
+                        ">Search Jobs</button>
+                      </div>
+                  </div>
                 </div>
-              </div>
+              </form>    
+           
             </div>
+           </div>
+          </div>
+
           </div>
         </div>
-      </div>
-      <div
-        class="ilstration_img wow fadeInRight d-none d-lg-block text-right"
-        data-wow-duration="1s"
-        data-wow-delay=".2s"
-      >
-        <img src="img/banner/illustration.png" alt="" />
       </div>
     </div>
-    <!-- slider_area_end -->
+      </header>
+    <!-- header_area_end -->
 
-    <!-- catagory_area -->
-    <div class="catagory_area">
-
-      <div class="container">
-        <form method="GET" action="{{ route('user.job.index') }}">
-
-            <div class="row cat_search">
-              <div class="col-lg-3 col-md-4">
-                <div class="single_input">
-                  <input type="text" name="keyword" placeholder="Search keyword" value="{{ request('keyword') }}">
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-4">
-                <div class="single_input">
-                  <select class="wide" name="category">
-                    <option value="" {{ request('category') == '' ? 'selected' : '' }}>All Categories</option>
-                    @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-4">
-                <div class="single_input">
-                  <select class="wide" name="location">
-                    <!-- <option value="">Select Location</option> -->
-                  <option data-display="Location"value="">Location</option>
-                  @foreach($locations as $location)
-                    <option value="{{$location->name}}" {{ request('location') == $location->name ? 'selected' : '' }}>{{$location->name}}</option>
-                  @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-4">
-                <div class="job_btn">
-                  <button type="submit" class="boxed-btn3 w-100">Find Job</button>
-                </div>
-            </div>
-          </div>
-        </form>    
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="popular_search d-flex align-items-center">
-              <span>Popular Search:</span>
-              <ul>
-                @foreach($popularCategories->slice(0, 7) as $category)
-                {{-- show jobs page and filter jobs in it where show only jobs that belong to this category --}}
-                
-                <li><a href="{{ route('user.job.index', ['category' => $category->id]) }}">
-                 {{ $category->name }}
-              </a></li> 
-                @endforeach
-               
-              </ul>
-            </div>
-          </div>
-        </div>
-        </div>
-
-      </div>
-    </div>
-    <!--/ catagory_area -->
 
     <!-- popular_catagory_area_start  -->
     <div class="popular_catagory_area">

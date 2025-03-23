@@ -1,3 +1,7 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: darkgrey;
+}
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 /* line 1, ../../Arafath/CL/December/235. Job board/HTML/scss/_extend.scss */
@@ -606,7 +610,16 @@ h3 {
 .boxed-btn2:focus {
     outline: none;
 }
-
+.custom-btn {
+    background-color: #0055d9;
+    color: white;
+}
+.custom-btn:focus {
+    border-color: #80b2ff;
+}
+.custom-btn:focus {
+    outline: none;
+}
 /* line 133, ../../Arafath/CL/December/235. Job board/HTML/scss/_btn.scss */
 .line-button {
     color: #919191;
@@ -2119,7 +2132,7 @@ h3 {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    background: #001d38;
+    background: rgb(3, 20, 49) !important;
 }
 
 /* line 7, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */

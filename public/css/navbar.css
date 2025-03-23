@@ -1,3 +1,190 @@
+.navbar {
+    z-index: 9998;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 62px;
+    width: 100%;
+}
+nav a {
+    color: white;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: normal;
+}
+.navbar .navbar-brand,
+footer .navbar-brand {
+    font-style: normal;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    line-height: normal;
+}
+.custom-btn {
+    background-color: #0055d9;
+    color: white;
+}
+.custom-btn:focus {
+    border-color: #80b2ff;
+}
+.custom-btn:focus {
+    outline: none;
+}
+
+.navbar .navbar-brand:focus,
+.navbar .navbar-brand:hover {
+    color: white;
+}
+.navbar .navbar-nav .active > .nav-link,
+.navbar .navbar-nav .nav-link.active,
+.navbar .navbar-nav .nav-link.show,
+.navbar .navbar-nav .show > .nav-link {
+    color: white;
+}
+.navbar .navbar-nav .nav-link {
+    color: white;
+}
+.navbar .navbar-nav a.nav-link:hover {
+    color: white;
+}
+.navbar .navbar-nav a.nav-link.post-btn:hover > span {
+    color: white;
+}
+.navbar .navbar-nav a.nav-link.post-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/* when scroll */
+/* 
+.navbar .navbar-nav a.nav-link.post-btn:hover {
+  background-color: #ccc;
+  border-radius: 5px;
+} */
+.navbar .navbar-nav a.nav-link.post-btn:hover,
+.navbar .navbar-nav a.nav-link.login-btn:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+}
+.nav-link {
+    padding: 0.25rem 1rem;
+}
+
+.navbar .navbar-nav a.nav-link.post-btn:focus,
+.navbar .navbar-nav a.nav-link.login-btn:focus {
+    border-color: #80b2ff;
+}
+
+.navbar .navbar-nav a.nav-link.post-btn:focus,
+.navbar .navbar-nav a.nav-link.login-btn:focus {
+    outline: none;
+}
+.navbar .navbar-nav a.nav-link.post-btn,
+.navbar .navbar-nav a.nav-link.login-btn,
+.navbar .navbar-nav a.nav-link.register-btn {
+    display: inline-flex;
+    -webkit-box-pack: center;
+
+    justify-content: center;
+
+    align-items: center;
+    font-size: 15px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    text-decoration: none;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    min-width: 80px;
+    -webkit-transition: color 0.2s ease, background-color 0.2s ease,
+        border-color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease,
+        border-color 0.2s ease;
+    min-height: 32px;
+    line-height: 22px;
+
+    height: 40px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 4px;
+    padding-inline: 12px;
+}
+.navbar .navbar-nav a.nav-link.post-btn,
+.navbar .navbar-nav a.nav-link.login-btn {
+    color: #4d6182;
+    background-color: transparent;
+    border-color: transparent;
+}
+.navbar .navbar-nav a.nav-link.register-btn {
+    color: #fff;
+    background-color: #0055d9;
+    border-color: transparent;
+}
+.navbar .navbar-nav a.nav-link.post-btn {
+    padding: 0;
+    padding-inline: 0;
+}
+.navbar .navbar-nav a.nav-link.post-btn:focus {
+    padding: 0 12px;
+    padding-inline: 12px;
+}
+.navbar .navbar-nav a.nav-link.post-btn:hover {
+    padding: 0 12px;
+    padding-inline: 12px;
+}
+.separtor {
+    height: 24px;
+    width: 1px;
+    background-color: #d9dde4;
+    margin-right: 16px;
+}
+.navbar .navbar-nav a.nav-link.login-btn {
+    border: 1px solid #fff;
+    border-radius: 4px;
+}
+
+nav ul {
+    width: 100%;
+}
+button.navbar-toggler {
+    border: none !important;
+    outline: none !important;
+}
+.navbar .navbar-nav .nav-item {
+    margin-top: 15px;
+}
+.separtor {
+    display: none;
+}
+@media (min-width: 992px) {
+    li.nav-item.li-post-btn {
+        margin-left: auto !important;
+    }
+    .separtor {
+        display: block;
+    }
+
+    .navbar .navbar-nav a.nav-link.post-btn {
+        padding: 0 12px;
+        padding-inline: 12px;
+    }
+    .navbar-expand-lg .navbar-nav {
+        align-items: center;
+    }
+    .navbar .navbar-nav .nav-item {
+        margin-top: 0;
+    }
+}
 .header-area .main-header-area .main-menu ul li {
     margin: 0px 10px !important;
 }
