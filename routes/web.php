@@ -16,7 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CandidateProfileController;
-
+use App\Http\Controllers\Candidate\CandidateDashboardController;
 // =============================
 // ✅ Public Routes appear for login and non login users
 // =============================
@@ -84,9 +84,8 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
     Route::post('/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
 
 
-    Route::get('/dashboard', function () {
-        return view('candidate.dashboard');
-    })->name('candidate.dashboard');
+ 
+    Route::get('/dashboard', [CandidateDashboardController::class, 'index_user'])->name('candidate.dashboard');
 
     //application of candidtes index , show Routes, edit, create or apply , delete
     Route::get('/application', [ApplicationController::class, 'showUserApplications'])->name('candidate.application.index');

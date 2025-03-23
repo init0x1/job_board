@@ -121,12 +121,12 @@
                                     </a>
 
                                           @else
-                                              <button class="applied  disabled boxed-btn3 btn">
+                                              <button class="applied  btn btn-primary disabled text-light">
                                                   Already Applied
                                               </button>
                                               @endif
                               @else
-                                  <button  class="btn btn-success disabled">Login to Apply</button>
+                                  <button  class="btn btn-primary disabled text-light">Login to Apply</button>
                               @endif
                           </div> 
                                 </div>
