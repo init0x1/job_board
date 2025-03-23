@@ -40,9 +40,6 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/css/category_area.css" />
 
     <!-- Styles -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> -->
-
     <link href="{{ asset('../../../css/app.css') }}" rel="stylesheet">
 
   @yield('customeCss')
@@ -105,12 +102,16 @@
              @auth
               @if(Auth::user()->role == 'candidate')
                 <li class="nav-item"><a class="nav-link"  href="{{ route('candidate.application.index') }}">Applications</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Saved</a></li>
               @elseif(Auth::user()->role == 'employer')
                 <li class="show-employeer-menu nav-item"><a class="nav-link" href="{{ route('user.job.index') }}">Jobs</a></li>
               @endif
             @endauth
+            @if(!Auth::check())
+
             <li class="hide-employeer text-white c-ptr hover:text-green-[400] nav-item" style="cursor:pointer" @click="showEmployeerPage()"><a class="nav-link" href="javascript:void(0);">For Employers</a></li>
+            @endif
+            @if(!Auth::check())
+
             <li class="nav-item li-post-btn" >
               <a class="nav-link post-btn" href="{{route('employer.jobs.create')}}">
                 <svg
@@ -128,12 +129,13 @@
                 <span class="">Post Job</span>
               </a>
             </li>
-            <span class="separtor"> </span>
+            @endif
+            <span class="separtor {{!Auth::check()? ' d-block ': ' d-none '}}"> </span>
            
 
             @auth
                     <!-- User Dropdown -->
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown {{!Auth::check()? ' ': ' ml-auto '}}" >
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
