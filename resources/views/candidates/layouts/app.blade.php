@@ -160,9 +160,7 @@
                 <li class="nav-item">
                   <a class="nav-link login-btn {{ request()->routeIs('login') ? 'active' : '' }}"   href="{{ route('login') }}">Login</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link register-btn {{ request()->routeIs('register') ? 'active' : '' }}"   href="{{ route('register') }}">Register</a>
-                </li>
+
                 @endauth
           </ul>
         </div>
