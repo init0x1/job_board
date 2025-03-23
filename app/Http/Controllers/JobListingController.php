@@ -219,6 +219,11 @@ class JobListingController extends Controller
         if ($job->company_id != auth()->user()->company->id) {
             abort(403, 'Unauthorized action.');
         }
+        $salaryMin = $this->formatSalary($request->salary_min);
+        $salaryMax = $this->formatSalary($request->salary_max);
+        if ($salaryMin !== null && $salaryMax !== null && $salaryMin > $salaryMax) {
+            return redirect()->back()->withErrors(['salary_min' => 'Minimum salary must be less than or equal to maximum salary.'])->withInput();
+        }
 
         $job->update([
             'title' => $request->title,
@@ -228,8 +233,8 @@ class JobListingController extends Controller
             'category_id' => $request->category_id,
             'location_id' => $request->location_id,
             'work_type' => $request->work_type,
-            'salary_min' => $request->salary_min,
-            'salary_max' => $request->salary_max,
+            'salary_min' => $salaryMin,
+            'salary_max' => $salaryMax,
             'application_deadline' => $request->application_deadline,
             'status' => 'pending',
         ]);
