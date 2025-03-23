@@ -26,6 +26,8 @@
             </nav>
         @elseif(Auth::check() && Auth::user()->role === 'admin')
             @include('layouts.admin-navigation')
+        @elseif(Auth::check() && Auth::user()->role === 'employer')
+            @include('layouts.employer_navbar') <!-- Include the employer navbar -->
         @else
             @include('layouts.navigation')
         @endif

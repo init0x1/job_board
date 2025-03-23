@@ -102,6 +102,7 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
 // ✅ Employer Routes
 // =============================
 Route::middleware(['auth', 'role:employer'])->group(function () {
+    Route::get('/employer/home', [CompanyController::class, 'employerHome'])->name('employer.home');
     Route::get('/employer/company', [CompanyController::class, 'showCompanyForm'])->name('employer.company');
     Route::post('/employer/company', [CompanyController::class, 'storeCompany']);
     Route::get('/jobs/create', [JobListingController::class, 'create'])->name('employer.jobs.create');
@@ -112,6 +113,11 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/jobs/{job}/edit', [JobListingController::class, 'edit'])->name('employer.jobs.edit');
     Route::put('/employer/jobs/{job}', [JobListingController::class, 'update'])->name('employer.jobs.update');
     Route::delete('/employer/jobs/{job}', [JobListingController::class, 'destroy'])->name('employer.jobs.destroy');
+
+    Route::get('/employer/profile', [CompanyController::class, 'employerProfile'])->name('employer.profile');
+    Route::post('/employer/profile', [CompanyController::class, 'updateEmployerProfile'])->name('employer.profile.update');
+    Route::post('/employer/profile/update-image', [CompanyController::class, 'updateImage'])->name('employer.profile.updateImage');
+   
 });
 
 // =============================

@@ -13,6 +13,7 @@ class Profile extends Model
         'user_id',
         'phone_number',
         'address',
+        'job_title' ,
         'bio',
         'resume_path',
         'linkedin_url',
