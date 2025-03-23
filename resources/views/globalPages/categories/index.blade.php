@@ -117,7 +117,7 @@
                 jobsIcon.fill="rgb(131,145,167)"
     }
     navLinks.forEach((link) => {
-            link.style.color = "rgb(131,145,167)";
+        link.style.color = "rgb(64, 86, 120)";
         });
 </script>
 @endsection
