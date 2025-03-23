@@ -1,8 +1,14 @@
 
 <!-- companies/show.blade.php -->
 @extends("candidates.layouts.app")
+@section("title")
+   Job Board - {{ $company->name }}
+@endsection
 @section('customeCss')
-  <style>
+<style>
+    body{
+        background-color:rgb(245,247,250)
+    }
     .owl-carousel .owl-nav div {
        left: -35px;
     }
@@ -10,18 +16,54 @@
       left: auto;
       right: -35px;
     }
-  </style>
-@endsection
-@section("title")
-   Job Board - {{ $company->name }}
-@endsection
+    #navabr{
+        box-shadow:0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important;
+        background-color:#fff !important;
+    }
+    nav.navbar .navbar-brand{
+        color :#0055d9 !important;
+    }
+    .separtor {
+    background-color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.post-btn{
+        background-color :rgb(235, 237, 240);
+        color :rgb(131,145,167);
+    }
+    .navbar .navbar-nav a.nav-link.post-btn span{
+        color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.login-btn{
+    border-color:rgb(131,145,167);
+    
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:hover{
+        background:rgb(230, 239, 255);
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:focus{
+        border-color:rgb(128, 178, 255)
+    }
+    .navbar .navbar-nav a.nav-link.post-btn svg path{
 
+
+    }
+    .navbar .navbar-toggler i .light{
+    display:none !important;
+    }
+    .navbar .navbar-toggler i .dark{
+        display:block !important;
+
+    }
+
+    .navbar .navbar-nav a.nav-link.register-btn{
+
+    }
+
+</style>
+
+@endsection
 @section("main")
-    <div class="bradcam_area bradcam_bg_1">
-      
-    </div>
-
-    <div class="company_details_area my-10 mt-10" style="padding-top:30px;padding-bottom:30px">
+    <div class="company_details_area my-10 mt-10" style="padding-top:100px;padding-bottom:100px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
@@ -80,4 +122,32 @@
 
         </div>
     </div>
+@endsection
+
+@section("customJs")
+<script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const navbar = document.getElementById("navbar");
+
+    const postBtn = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn"
+    );
+    const postBtnspan = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn span"
+    );
+    const jobsIcon = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn svg path"
+    );
+    navbar.style.backgroundColor = "#fff";
+    navbar.style.border = "1px solid rgba(0, 0, 0, 0.19)";
+        // navbar.style.boxShadow =
+        //     "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)";
+    if (postBtn && jobsIcon) {
+                jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
+                jobsIcon.fill="rgb(131,145,167)"
+    }
+    navLinks.forEach((link) => {
+            link.style.color = "rgb(131,145,167)";
+        });
+</script>
 @endsection

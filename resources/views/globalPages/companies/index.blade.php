@@ -4,22 +4,106 @@
 @section("title")
    Job Board - Companies
 @endsection
+@section('customeCss')
+<style>
+    body{
+        background-color:rgb(245,247,250)
+    }
+    #navabr{
+        box-shadow:0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important;
+        background-color:#fff !important;
+    }
+    nav.navbar .navbar-brand{
+        color :#0055d9 !important;
+    }
+    .separtor {
+    background-color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.post-btn{
+        background-color :rgb(235, 237, 240);
+        color :rgb(131,145,167);
+    }
+    .navbar .navbar-nav a.nav-link.post-btn span{
+        color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.login-btn{
+    border-color:rgb(131,145,167);
+    
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:hover{
+        background:rgb(230, 239, 255);
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:focus{
+        border-color:rgb(128, 178, 255)
+    }
+    .navbar .navbar-nav a.nav-link.post-btn svg path{
 
+
+    }
+    .navbar .navbar-toggler i .light{
+    display:none !important;
+    }
+    .navbar .navbar-toggler i .dark{
+        display:block !important;
+
+    }
+
+    .navbar .navbar-nav a.nav-link.register-btn{
+
+    }
+
+</style>
+
+@endsection
+@section('customeCss')
+<style>
+#navabr{
+    box-shadow:0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important;
+    background-color:#fff !important;
+}
+nav.navbar .navbar-brand{
+    color :#0055d9 !important;
+}
+.separtor {
+  background-color:rgb(131,145,167) !important;
+}
+.navbar .navbar-nav a.nav-link.post-btn{
+    background-color :rgb(235, 237, 240);
+    color :rgb(131,145,167);
+}
+.navbar .navbar-nav a.nav-link.post-btn span{
+    color:rgb(131,145,167) !important;
+}
+.navbar .navbar-nav a.nav-link.login-btn{
+   border-color:rgb(131,145,167);
+   
+}
+.navbar .navbar-nav a.nav-link.login-btn:hover{
+    background:rgb(230, 239, 255);
+}
+.navbar .navbar-nav a.nav-link.login-btn:focus{
+    border-color:rgb(128, 178, 255)
+}
+.navbar .navbar-nav a.nav-link.post-btn svg path{
+
+
+}
+.navbar .navbar-toggler i .light{
+  display:none !important;
+}
+.navbar .navbar-toggler i .dark{
+    display:block !important;
+
+}
+
+.navbar .navbar-nav a.nav-link.register-btn{
+
+}
+
+</style>
+
+@endsection
 @section("main")
-    <!-- bradcam_area  -->
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>Companies</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/ bradcam_area  -->
-
     <!-- featured_companies_area_start  -->
     <div class="featured_candidates_area candidate_page_padding">
         <div class="container">
@@ -53,4 +137,31 @@
         </div>
     </div>
     <!-- featured_companies_area_end  -->
+@endsection
+@section("customJs")
+<script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const navbar = document.getElementById("navbar");
+
+    const postBtn = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn"
+    );
+    const postBtnspan = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn span"
+    );
+    const jobsIcon = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn svg path"
+    );
+    navbar.style.backgroundColor = "#fff";
+    navbar.style.border = "1px solid rgba(0, 0, 0, 0.19)";
+        // navbar.style.boxShadow =
+        //     "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)";
+    if (postBtn && jobsIcon) {
+                jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
+                jobsIcon.fill="rgb(131,145,167)"
+    }
+    navLinks.forEach((link) => {
+            link.style.color = "rgb(131,145,167)";
+        });
+</script>
 @endsection

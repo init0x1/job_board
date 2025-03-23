@@ -1,33 +1,59 @@
 
 @extends("candidates.layouts.app")
-@section('customeCss')
-  <style>
-    .owl-carousel .owl-nav div {
-       left: 0;
-    }
-    .owl-carousel .owl-nav div.owl-next {
-      left: auto;
-      right: 0;
-    }
-  </style>
-@endsection
+
 @section("title")
    Job Board - {{ $job ? $job->title : 'Job Details' }}
 @endsection
+@section('customeCss')
+<style>
+    #navabr{
+        box-shadow:0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important;
+        background-color:#fff !important;
+    }
+    nav.navbar .navbar-brand{
+        color :#0055d9 !important;
+    }
+    .separtor {
+    background-color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.post-btn{
+        background-color :rgb(235, 237, 240);
+        color :rgb(131,145,167);
+    }
+    .navbar .navbar-nav a.nav-link.post-btn span{
+        color:rgb(131,145,167) !important;
+    }
+    .navbar .navbar-nav a.nav-link.login-btn{
+    border-color:rgb(131,145,167);
+    
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:hover{
+        background:rgb(230, 239, 255);
+    }
+    .navbar .navbar-nav a.nav-link.login-btn:focus{
+        border-color:rgb(128, 178, 255)
+    }
+    .navbar .navbar-nav a.nav-link.post-btn svg path{
+
+
+    }
+    .navbar .navbar-toggler i .light{
+    display:none !important;
+    }
+    .navbar .navbar-toggler i .dark{
+        display:block !important;
+
+    }
+
+    .navbar .navbar-nav a.nav-link.register-btn{
+
+    }
+
+</style>
+
+@endsection
 @section("main")
     @if($job)
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>{{ $job->title }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="job_details_area">
 
         <div class="container">
@@ -86,18 +112,16 @@
                                
                             </div>
                             <div class="jobs_right">
-                                <div class="apply_now">
-                                <div class="row jobs_content">
-                              
-                              </div>  <div class="pt-3 text-end">
+                                <div class="apply_now ">
+                                 <div class="pt-3 text-end">
                               @if (Auth::check())
                                   @if(!$job->isAppliedByUser())
-                                  <a href="{{ route('candidate.createApplication', ['job_id' => $job->id]) }}" class="btn btn-success">
+                                  <a href="{{ route('candidate.createApplication', ['job_id' => $job->id]) }}" class="btn boxed-btn3">
                                         Apply Now
                                     </a>
 
                                           @else
-                                              <button class="applied text-success disabled btn-light btn">
+                                              <button class="applied  disabled boxed-btn3 btn">
                                                   Already Applied
                                               </button>
                                               @endif
@@ -209,4 +233,32 @@
     </div>
     @endif
 
+@endsection
+
+@section("customJs")
+<script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const navbar = document.getElementById("navbar");
+
+    const postBtn = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn"
+    );
+    const postBtnspan = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn span"
+    );
+    const jobsIcon = document.querySelector(
+        ".navbar .navbar-nav a.nav-link.post-btn svg path"
+    );
+    navbar.style.backgroundColor = "#fff";
+    navbar.style.border = "1px solid rgba(0, 0, 0, 0.19)";
+        // navbar.style.boxShadow =
+        //     "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)";
+    if (postBtn && jobsIcon) {
+                jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
+                jobsIcon.fill="rgb(131,145,167)"
+    }
+    navLinks.forEach((link) => {
+            link.style.color = "rgb(131,145,167)";
+        });
+</script>
 @endsection

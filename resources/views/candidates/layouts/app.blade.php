@@ -3,16 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Job Board</title>
+    <title>Wuzzefny</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <!-- font google links -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png" />
-    <!-- Place favicon.ico in the root directory -->
 
-    <!-- CSS here -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@100;200;300;400;500;600;700;800;900&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Arabic:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <!-- bootstarp style -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="/css/magnific-popup.css" />
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
@@ -28,11 +30,24 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/home.css" />
-    <link rel="stylesheet" href="/css/navbar.css" />
-    @yield("customeCss")
-  </head>
 
-  <body>
+
+    <!-- nav style -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/navbar.css" />
+    <!-- header style -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/header.css" />
+    <!-- categories area style -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/category_area.css" />
+
+    <!-- Styles -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> -->
+
+    <link href="{{ asset('../../../css/app.css') }}" rel="stylesheet">
+
+  @yield('customeCss')
+  </head>
+  <body >
     <!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
@@ -40,51 +55,89 @@
         your experience and security.
       </p>
     <![endif]-->
+    <nav class="navbar navbar-expand-lg fixed-top py-0" id="navbar">
+      <div class="container">
+        <a class="navbar-brand" href="{{ route('candidates.home') }}">WUZZEFNY</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i size="22" class="css-yb1q05 efou2fk0"
+            ><svg
+            class="light"
 
-    <!-- header-start -->
-    <header>
-      <div class="header-area">
-        <div id="sticky-header" class="main-header-area">
-          <div class="container-fluid">
-            <div class="header_bottom_border">
-              <div class="row align-items-center">
-                <div class="col-xl-2 col-lg-2">
-                  <div class="logo">
-                    <a href="{{ route('candidates.home') }}">
-                      <img src="/img/logo.png" alt="" />
-                    </a>
-                  </div>
-                </div>
-                <div class="col-xl-4 col-lg-4">
-                  <div class="main-menu d-none d-lg-block">
-                    <nav>
-                      <ul id="navigation">
-                      <li><a class="hide-employeer" href="{{ route('user.job.index') }}">Browse Job</a></li>
-                      @auth
-                      @if(Auth::user()->role == 'candidate')
+              width="22"
+              height="22"
+              preserveAspectRatio="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="#ffffff"
+                d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+              ></path>
+            </svg>
+            <svg
+              class="dark"
+              style="display:none"
+              width="22"
+              height="22"
+              preserveAspectRatio="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="#000000"
+                d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+              ></path>
+            </svg>
+          </i>
+        </button>
+        <div class="collapse navbar-collapse w-75" id="navbarNav">
+          <ul class="navbar-nav">
+            
+           <li class="nav-item">
+            <li><a class="hide-employeer nav-link" href="{{ route('user.job.index') }}">Browse Job</a>
+            </li>
+             @auth
+              @if(Auth::user()->role == 'candidate')
+                <li class="nav-item"><a class="nav-link"  href="{{ route('candidate.application.index') }}">Applications</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Saved</a></li>
+              @elseif(Auth::user()->role == 'employer')
+                <li class="show-employeer-menu nav-item"><a class="nav-link" href="{{ route('user.job.index') }}">Jobs</a></li>
+              @endif
+            @endauth
+            <li class="hide-employeer text-white c-ptr hover:text-green-[400] nav-item" style="cursor:pointer" @click="showEmployeerPage()"><a class="nav-link" href="javascript:void(0);">For Employers</a></li>
+            <li class="nav-item li-post-btn" >
+              <a class="nav-link post-btn" href="{{route('employer.jobs.create')}}">
+                <svg
+                  width="25"
+                  height="25"
+                  preserveAspectRatio="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                  fill="#ffffff"
+                  d="M10.5 4.875V3.375H7.5V4.875H10.5ZM3 7.125V13.875C3 14.2875 3.3375 14.625 3.75 14.625H14.25C14.6625 14.625 15 14.2875 15 13.875V7.125C15 6.7125 14.6625 6.375 14.25 6.375H3.75C3.3375 6.375 3 6.7125 3 7.125ZM15 4.875C15.8325 4.875 16.5 5.5425 16.5 6.375V14.625C16.5 15.4575 15.8325 16.125 15 16.125H3C2.1675 16.125 1.5 15.4575 1.5 14.625L1.5075 6.375C1.5075 5.5425 2.1675 4.875 3 4.875H6V3.375C6 2.5425 6.6675 1.875 7.5 1.875H10.5C11.3325 1.875 12 2.5425 12 3.375V4.875H15Z"
+                  ></path>
+                </svg>
+               
+                <span class="">Post Job</span>
+              </a>
+            </li>
+            <span class="separtor"> </span>
+           
 
-                  
-                     <li><a href="{{ route('candidate.application.index') }}">Applications</a></li>
-                     <li><a href="#">Saved</a></li>
-                     @elseif(Auth::user()->role == 'employer')
-                     <li class="show-employeer-menu"><a href="{{ route('user.job.index') }}">Jobs</a></li>
-                     @endif
-                      @endauth
-                        <li class="hide-employeer text-white c-ptr hover:text-green-[400]" style="cursor:pointer" @click="showEmployeerPage()">For Employers</li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-                <div class="col-xl-6 col-lg-6 d-none d-lg-block">
-                  <div class="Appointment">
-                    <div class="phone_num d-none d-xl-block">
-                    @auth 
+            @auth
                     <!-- User Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
-                                alt="Profile" class="rounded-circle me-2" width="40" height="40">
+                                alt="Profile" class="rounded-circle "  style="padding-right: 5px;" width="40" height="40">
                             <span>{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -103,37 +156,18 @@
                             </li>
                         </ul>
                     </li>
-                    @else
-                    <!-- Login & Register Links -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('register') ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
-                    </li>
-              @endauth
-                    </div>
-                    <div class="d-none d-lg-block">
-                      @auth
-                    @if(Auth::user()->role == 'employer')
-                      <li><a  class="boxed-btn3" href="#">Post a Job</a></li>
-                      @endif
-                      @endauth
-                    </div>  
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="mobile_menu d-block d-lg-none"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+                @else
+                <li class="nav-item">
+                  <a class="nav-link login-btn {{ request()->routeIs('login') ? 'active' : '' }}"   href="{{ route('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link register-btn {{ request()->routeIs('register') ? 'active' : '' }}"   href="{{ route('register') }}">Register</a>
+                </li>
+                @endauth
+          </ul>
         </div>
       </div>
-    </header>
-    <!-- header-end -->
-         
-   
+    </nav>
          <section>
          @yield("main")
 
@@ -152,8 +186,8 @@
                 data-wow-delay=".3s"
               >
                 <div class="footer_logo">
-                  <a href="#">
-                    <img src="/img/logo.png" alt="" />
+                  <a href="#" class="navbar-brand" style="color:white; font-size:">
+                    WUZZEFNY
                   </a>
                 </div>
                 <p>
@@ -264,8 +298,7 @@
       </div>
     </footer>
     <!--/ footer end  -->
-
-    <!-- link that opens popup -->
+        <!-- link that opens popup -->
     <!-- JS here-->
     <script src="/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="/js/vendor/jquery-1.12.4.min.js"></script>
@@ -286,20 +319,20 @@
     <script src="/js/plugins.js"></script>
     <!-- <script src="js/gijgo.min.js"></script> -->
 
-    <!--contact js-->
-    <script src="/js/contact.js"></script>
+      <!--contact js-->
     <script src="/js/jquery.ajaxchimp.min.js"></script>
     <script src="/js/jquery.form.js"></script>
     <script src="/js/jquery.validate.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
-
-    <script src="/js/mail-script.js"></script>
 
 
     <script src="/js/main.js"></script>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('../../../js/app.js') }}" defer></script>
     @yield('customJs')
     <script>
+
       function showEmployeerMenu() {
         document.querySelector('.show-employeer').classList.toggle('show-employeer-menu');
         
@@ -307,6 +340,18 @@
         document.querySelector(".hide-employeer").style.display = "none";
         document.querySelector(".show-employeer").style.display = "block";
       }
+      // $(document).ready(function () {
+      //   $('.nice-select').niceSelect(); // Initialize nice select
+        
+      //   $('.nice-select').on('click', function () {
+      //     $('.nice-select .list').css({
+      //       top: $(this).outerHeight() + 'px', // Ensures the dropdown appears below
+      //       bottom: 'auto'
+      //     });
+      //   });
+      // });
+
     </script>
+
   </body>
 </html>
