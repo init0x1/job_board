@@ -25,6 +25,9 @@ class JobListing extends Model
         'salary_max',
         'application_deadline',
         'status',
+        'salary_min',
+        'salary_max',
+
     ];
 
     //make application expired after 3 days

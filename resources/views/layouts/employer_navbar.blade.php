@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-0">
+    <div class="container-fluid">
         <!-- Brand Name -->
         <a class="navbar-brand fw-bold text-primary" href="{{ route('employer.dashboard') }}">
             <i class="bi bi-briefcase-fill"></i> Job Board
@@ -33,6 +33,20 @@
                         <i class="bi bi-plus-circle-fill"></i> Create a New Job
                     </a>
                 </li>
+
+                <!-- View Applications Link -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('employer/applications') ? 'active' : '' }}">
+                        <i class="bi bi-file-earmark-text-fill"></i> View Applications
+                    </a>
+                </li>
+
+                <!-- Company Profile Link -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('employer/company') ? 'active' : '' }}" href="{{ route('employer.company') }}">
+                        <i class="bi bi-building"></i> Company Profile
+                    </a>
+                </li>
             </ul>
 
             <!-- User Profile Dropdown -->
@@ -40,7 +54,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}" 
-                             class="rounded-circle me-2" width="35" height="35" alt="User Image">
+                             class="rounded-circle me-2" width="40" height="40" alt="User Image">
                         <span class="fw-bold">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -71,12 +85,14 @@
 <!-- Custom Styles for Navbar -->
 <style>
     .navbar {
+        margin-bottom: 0; /* Remove space below the navbar */
         background-color: #ffffff; /* White background for navbar */
         border-bottom: 1px solid #e9ecef; /* Subtle border for separation */
+        padding: 0.8rem 2rem; /* Adjust padding for a compact look */
     }
 
     .navbar-brand {
-        font-size: 1.5rem;
+        font-size: 1.8rem; /* Larger font size for brand */
         font-weight: bold;
         color: #0d6efd; /* Primary color for brand */
     }
@@ -86,10 +102,11 @@
     }
 
     .navbar-nav .nav-link {
-        font-size: 1rem;
+        font-size: 1.1rem; /* Slightly larger font size for links */
         font-weight: 500;
         color: #6c757d; /* Default text color */
         transition: color 0.3s ease;
+        padding: 0.8rem 1rem; /* Increased padding for better spacing */
     }
 
     .navbar-nav .nav-link:hover {
@@ -115,7 +132,7 @@
     }
 
     .dropdown-item {
-        font-size: 0.9rem;
+        font-size: 1rem; /* Slightly larger font size for dropdown items */
         font-weight: 500;
     }
 
