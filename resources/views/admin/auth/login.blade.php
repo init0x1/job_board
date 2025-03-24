@@ -38,6 +38,12 @@
 
                         <button type="submit" class="btn btn-danger w-100">Login</button>
                     </form>
+
+                    <!-- Create Admin Account Link -->
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Don't have an account?</p>
+                        <a href="{{ route('admin.register') }}" class="text-danger fw-bold">Create Admin Account</a>
+                    </div>
                 </div>
             </div>
         </div>

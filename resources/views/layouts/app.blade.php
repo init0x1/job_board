@@ -17,19 +17,15 @@
 </head>
 <body>
     <div id="app">
-        @if(request()->routeIs('choose.role'))
-            <!-- Simple navigation for role selection page -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-                <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">Job Board</a>
-                </div>
-            </nav>
-        @elseif(Auth::check() && Auth::user()->role === 'admin')
-            @include('layouts.admin-navigation')
-        @elseif(Auth::check() && Auth::user()->role === 'employer')
-            @include('layouts.employer_navbar') <!-- Include the employer navbar -->
-        @else
-            @include('layouts.navigation')
+        @if(!request()->routeIs('admin.login') && !request()->routeIs('admin.register.form')) 
+            <!-- Exclude navbar for admin/login and admin/register -->
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                @include('layouts.admin-navigation')
+            @elseif(Auth::check() && Auth::user()->role === 'employer')
+                @include('layouts.employer_navbar') <!-- Include the employer navbar -->
+            @else
+                @include('layouts.navigation')
+            @endif
         @endif
 
         <main class="py-4">
