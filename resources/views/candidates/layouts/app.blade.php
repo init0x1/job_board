@@ -107,7 +107,7 @@
             @endauth
             @if(!Auth::check())
 
-            <li class="hide-employeer text-white c-ptr hover:text-green-[400] nav-item" style="cursor:pointer" @click="showEmployeerPage()"><a class="nav-link" href="javascript:void(0);">For Employers</a></li>
+            <li class="hide-employeer text-white c-ptr hover:text-green-[400] nav-item" style="cursor:pointer" @click="showEmployeerPage()"><a class="nav-link" href="{{route('employer.home')}}">For Employers</a></li>
             @endif
             @if(!Auth::check())
 

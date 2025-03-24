@@ -12,7 +12,7 @@ body{
     }
     #navbar{
         background-color:#fff !important;
-        height:unset;
+        /* height:unset; */
         
     }
     nav.navbar .navbar-brand{
