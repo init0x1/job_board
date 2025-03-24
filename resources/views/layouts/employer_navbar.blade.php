@@ -36,7 +36,7 @@
 
                 <!-- View Applications Link -->
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('employer/applications') ? 'active' : '' }}">
+                    <a class="nav-link {{ request()->is('employer/applications') ? 'active' : '' }}" href="{{route('employer.applications')}}" >
                         <i class="bi bi-file-earmark-text-fill"></i> View Applications
                     </a>
                 </li>
@@ -53,7 +53,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}" 
+                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
                              class="rounded-circle me-2" width="40" height="40" alt="User Image">
                         <span class="fw-bold">{{ Auth::user()->name }}</span>
                     </a>
@@ -67,7 +67,7 @@
                         <li><hr class="dropdown-divider"></li>
                         <!-- Logout Link -->
                         <li>
-                            <a class="dropdown-item text-danger" href="{{ route('logout') }}" 
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="bi bi-box-arrow-right"></i> Logout
                             </a>
