@@ -233,10 +233,16 @@
         // navbar.style.boxShadow =
         //     "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)";
     if (postBtn && jobsIcon) {
-                jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
-                jobsIcon.fill="rgb(131,145,167)"
+        jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
+        jobsIcon.fill="rgb(131,145,167)"
     }
     navLinks.forEach((link) => {
-        link.style.color = "rgb(64, 86, 120)";        });
+        link.style.color = "rgb(64, 86, 120)"; 
+    });
+    navLinks.forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add("active");
+        }
+    });
 </script>
 @endsection
