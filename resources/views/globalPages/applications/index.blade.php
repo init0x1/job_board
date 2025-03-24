@@ -223,7 +223,25 @@
         margin-right: 8px;
         border-radius: 4px;
     }
-    
+    .css-mo6ioo {
+       display: flex;
+       margin-right: 8px;
+    } 
+    .css-1e1wln7 {
+        width: 4px;
+        height: 16px;
+        margin-left: 2px;
+        background-color: rgb(128, 178, 255);
+    }
+    .css-49jpk6 {
+    min-height: 62px;
+    padding: 8px;
+    background-color: rgb(250, 250, 251);
+    color: rgb(128, 142, 165);
+    font-size: 15px;
+    border: 1px solid rgb(217, 221, 228);
+    border-radius: 2px;
+}
 </style>
 @endsection
 @section("main")
@@ -232,8 +250,8 @@
         @if($applications &&$applications->count())
             @php
                 $pendingCount = count(array_filter($applications->toArray(), fn($app) => $app['status'] === 'pending'));
-                $acceptedCount = count(array_filter($applications->toArray(), fn($app) => $app['status'] === 'accepted'));
-                $notSelectedCount = count(array_filter($applications->toArray(), fn($app) => $app['status'] === 'not-selected'));
+                $acceptedCount = count(array_filter($applications->toArray(), fn($app) => $app['status'] === 'approved'));
+                $notSelectedCount = count(array_filter($applications->toArray(), fn($app) => $app['status'] === 'rejected'));
             @endphp
             <div class="row tabs-section justify-content-start"> 
                 <div class="col-md-7">
@@ -265,7 +283,11 @@
                                 data-company="{{ $application->job->company->name }}" 
                                 data-location="{{ $application->job->location }}"
                                 data-id="{{ $application->id }}"
-                                data-status="{{ $application->status }}" 
+                                data-cv="{{ $application->resume_path }}" 
+                                data-cover="{{ $application->cover_letter }}" 
+                                data-website="{{ $application->website }}" 
+                                data-posted="{{$application->created_at}}"
+
                                 onclick="openApplicationReview(this)">
                                 <div class="d-flex align-items-center">
                                     <div class="img-cont  col-sm-2">
@@ -321,16 +343,96 @@
 
                 <!-- Application Details Preview -->
                 <div class="col-md-6">
-                    <div id="application-preview" class="p-4 bg-white shadow-sm rounded" style="display: none;">
-                        <h4 id="preview-title" class="mb-2"></h4>
-                        <p class="text-muted"><strong>Company:</strong> <span id="preview-company"></span></p>
-                        <p class="text-muted"><strong>Location:</strong> <span id="preview-location"></span></p>
-                        <p class="text-muted"><strong>Status:</strong> <span id="preview-status" class="badge"></span></p>
-                        <a href="{{ route('candidate.application.show', $application->id) }}" class="btn btn-info btn-sm">View</a>
+                    <div id="application-preview" class="px-4 pt-3 pb-2" style="display: none;    background: rgb(255, 255, 255);
+                        border: 1px solid rgb(217, 221, 228);
+                        cursor: auto;
+                    
+                        width: 484px;
+                        box-shadow: rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 3px 3px -2px, rgba(0, 0, 0, 0.2) 0px 1px 8px 0px;
+                        border-radius: 3px; 
+                    ">
+                    <h2  id="preview-title" style="font-size:24px;line-height:34px;color:rgb(0,85,217);font-style:normal;font-weight:700">
+                        
+                        - <span   id="preview-type" ></span></h2>
+                        {{--example
+                            posted 1 day ago
+                        --}}
+                        <p
+                        style="font-size:12px;line-height:19px;color:rgb(128,142,165);font-weight:400;font-style:normal;">
+                        Posted <span   id="preview-posted" ></span> ago</p>
+                        <div class="comp-info d-flex align-items-center">
+                         <span    id="preview-company" class="" 
+   
+                            style="font-size:12px;line-height:19px;color:rgb(0,20,51);font-weight:600;font-style:normal;">
+                            </span>&nbsp;-&nbsp;
+                            <span    id="preview-location" class="ms-2 text-secondary" 
+                            style="font-size:11px;line-height:18px;color:rgb(77,97,130);font-weight:600;font-style:normal;">
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between" style="margin-top:0.25rem">
+                            <p class="text-muted "
+                            style="font-size:14px;line-height:22px;color:rgb(0, 20, 51) !important;font-weight:600;font-style:normal;">
+                            Screening Questions</p>
+                            <div class="d-flex"
+                                style="justify-content: center;align-items: center;font-size:12px;line-height:19px;color:rgb(0, 20, 51) !important;font-weight:400;font-style:normal;">
+                                <div class="css-mo6ioo">
+                                    <div class="css-1e1wln7"></div>
+                                    <div class="css-1e1wln7"></div>
+                                    <div class="css-1e1wln7"></div>
+                                </div>
+                                <p class="m-0"> Answered 3 out of 3</p>
+                            </div>
+                        </div>
+                        <div class="questions">
+                            <form  method="POST" action="#"
+                            enctype="multipart/form-data">
 
-                        @if(($application->status == 'pending' && $application->job->application_deadline >= now()))
-                        <a href="{{ route('candidate.application.edit', $application->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        @endif
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="" style="">
+                                        <label for="website" class="form-label">Website</label> 
+                                            <p id="preview-website" class="w-100"  style="border: 1px solid #ccc; padding: 5px 9px; font-size: 14px; background: #e9ecef"
+                                            ></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 my-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="resume" class="form-label">Resume/CV</label> 
+                                            {{--href="{{ asset('storage/' . $application->resume_path?? '') }}" --}}
+                                            <a
+                                                   id="preview-cv"
+                                                   href=""
+                                                target="_blank" class="text-info text-decoration-underline"
+                                                style="text-decoration-line: underline;"
+                                            >
+                                                View Uploaded Resume
+                                            </a>
+                                        </div>
+                                        <div class="css49jpk6">
+                                        <input  type="file" class="form-control w-100" id="resume" name="resume" accept=".pdf,.doc,.docx" readonly >
+
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="csss49jpk6">
+                                        <label for="cover_letter" class="form-label">Cover Letter</label> 
+                                            <p id="preview-cover" class="w-100" style="min-height:150px;border: 1px solid #ccc; padding: 5px 9px; font-size: 14px; background: #e9ecef"></p>
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                                @if(($application->status == 'pending' && $application->job->application_deadline >= now()))
+                                <a href="{{ route('candidate.application.edit', $application->id) }}" 
+                                style="display: block;width: 62px;"
+                                class="ml-auto btn btn-primary btn-sm">Edit</a>
+                                @endif
+                            </form>
+                        
+                            </div>
+
                                             
                     </div>
                 </div>
@@ -420,25 +522,33 @@ function openApplicationReview(element,id) {
     const title = element.getAttribute("data-title");
     const company = element.getAttribute("data-company");
     const location = element.getAttribute("data-location");
-    const status = element.getAttribute("data-status");
+    // const status = element.getAttribute("data-status");
+
+    const posted = element.getAttribute("data-posted");
+    const website = element.getAttribute("data-website");
+    const resumePath = element.getAttribute("data-cv");
+    const cover_letter = element.getAttribute("data-cover");
 
     // Update preview section
     document.getElementById("preview-title").textContent = title;
     document.getElementById("preview-company").textContent = company;
     document.getElementById("preview-location").textContent = location;
-    
-    const statusBadge = document.getElementById("preview-status");
-    statusBadge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-    statusBadge.className = "badge"; // Reset badge class
-    
-    if (status === "accepted") {
-        statusBadge.classList.add("bg-success");
-    } else if (status === "pending") {
-        statusBadge.classList.add("bg-warning");
-    } else if (status === "not-selected") {
-        statusBadge.classList.add("bg-danger");
-    }
+    document.getElementById("preview-posted").textContent = posted;
 
+    document.getElementById("preview-website").textContent = website;
+    document.getElementById("preview-cover").textContent  = cover_letter;
+
+
+    // Update the Resume/CV field
+    var resumeInput = document.getElementById("resume");
+    var viewResumeBtn = document.getElementById("preview-cv");
+
+    if (resumePath) {
+        viewResumeBtn.href = "/storage/" + resumePath; // Update the link
+        viewResumeBtn.style.display = "inline-block"; // Show the button
+    } else {
+        viewResumeBtn.style.display = "none"; // Hide the button if no CV exists
+    }
     // Show the preview panel
     document.getElementById("application-preview").style.display = "block";
 }
