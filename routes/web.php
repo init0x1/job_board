@@ -60,7 +60,7 @@ Route::get('/dashboard', function () {
     if (Auth::check()) {
         return match (Auth::user()->role) {
             'candidate' => redirect()->route('candidate.dashboard'),
-            'employer' => redirect()->route('employer.dashboard'),
+            'employer' => redirect()->route('employer.home'),
             'admin' => redirect()->route('admin.dashboard'),
             default => redirect('/login'),
         };
