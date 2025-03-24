@@ -242,7 +242,7 @@ body{
                                             
                                                     <img src="{{ $imageUrl }}" class=" w-100 h-100">
                                                     @else 
-                                                        <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" alt="company logo" />
+                                                    <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" alt="company logo"  class=" w-100 h-100"/>
                                                     @endif
                                                 </div>
                                                 <div class="jobs_conetent">
