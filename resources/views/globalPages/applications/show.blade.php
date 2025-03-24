@@ -101,7 +101,22 @@
                                     </div>
                                     <div class="col-md-4">
                                        <div class="img " style="width:100px;height:50px">
-                                            <img src="{{asset('/img/company_logos/axios.png')}}" class="w-100 h-100" alt="">
+                                            @if($application->job && $application->job->company)
+                                            @php
+                                                    $storagePath = public_path('storage/' .   $application->job->company->logo_path);
+                                                    $publicPath = public_path( 'img/' .   $application->job->company->logo_path);
+                                                    if (!empty(  $application->job->company->logo_path) && file_exists($storagePath)) {
+                                                        $imageUrl = asset('storage/' .   $application->job->company->logo_path);
+                                                    } elseif (!empty(  $application->job->company->logo_path) && file_exists($publicPath)) {
+                                                        $imageUrl = asset( 'img/' .  $application->job->company->logo_path);
+                                                    }else {
+                                                        $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                                                    }      
+                                                @endphp
+                                                <img src="{{ $imageUrl }}" class="img-full w-100 h-100">
+                                            @else
+                                              <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" class="img-full w-100 h-100">
+                                            @endif
                                         </div>
                                     </div>
                                     </div>
