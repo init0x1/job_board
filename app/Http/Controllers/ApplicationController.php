@@ -163,15 +163,15 @@ class ApplicationController extends Controller
     // Show single application of single user
     public function showSingleUserApplication($id)
     {
-        //show error if application not found
-        $application = Application::findOrFail($id);
+        $application = Application::where('user_id', Auth::id())->findOrFail($id);
+        $job = JobListing::findOrFail($application->job_id);
 
-        // Check if the logged-in user owns this application
-        if (Auth::id() !== $application->user_id) {
-            return abort(403, 'Unauthorized Access');
+        // Check if the application is pending and the job deadline has not passed
+        if ($application->status !== 'pending' || now()->greaterThan($job->application_deadline)) {
+            return redirect()->route('candidate.application.index')->with('error', 'You cannot edit this application.');
         }
 
-        return view('globalPages.applications.show', compact('application'));
+        return view('globalPages.applications.show', compact('application','job'));
     }
 
     // create the form to apply for a job
@@ -185,24 +185,40 @@ class ApplicationController extends Controller
     public function store(Request $request, $jobId)
     {
         $request->validate([
-            'website' => 'nullable|url|max:255',
+            'website' => 'url|max:255',
             'cover_letter' => 'required|string',
-            'resume_path' => 'required|mimes:pdf,doc,docx|max:2048'
+            'resume_path' => 'nullable|file|mimes:pdf,doc,docx|max:2048'
         ]);
-
-        $resume_path = $request->file('resume_path')->store('resumes', 'public');
-
+    
+        $user = Auth::user();
+        $profile = $user->profile;
+    
+        // Check if a new resume is uploaded
+        if ($request->hasFile('resume_path')) {
+            $resume_path = $request->file('resume_path')->store('resumes', 'public');
+    
+            // Update user's profile resume
+            if ($profile) {
+                $profile->update(['resume_path' => $resume_path]);
+            }
+        } else {
+            // Use the existing resume from the user's profile
+            $resume_path = $profile->resume_path ?? null;
+        }
+    
+        // Create the job application
         Application::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'job_id' => $jobId,
             'website' => $request->website,
             'cover_letter' => $request->cover_letter,
             'resume_path' => $resume_path,
-            'status'=>'pending'
+            'status' => 'pending'
         ]);
-
+    
         return redirect()->route('candidate.application.index')->with('success', 'Application submitted successfully!');
     }
+    
 
     public function edit($id)
     {
@@ -254,20 +270,6 @@ class ApplicationController extends Controller
 
         return redirect()->route('candidate.application.index')->with('success', 'Application saved successfully!');
     }
-    // Delete application
-    public function destroy($id)
-    {
-        $application = Application::where('user_id', Auth::id())->findOrFail($id);
-        $job = JobListing::findOrFail($application->job_id);
 
-        // Restrict delete if the application is not pending or job deadline has passed
-        if ($application->status !== 'pending' || now()->greaterThan($job->application_deadline)) {
-            return redirect()->route('candidate.application.index')->with('error', 'You cannot delete this application.');
-        }
-
-        $application->delete();
-
-        return redirect()->route('candidate.application.index')->with('success', 'Application deleted successfully!');
-    }
 
 }

@@ -48,7 +48,8 @@ class JobListingSeeder extends Seeder
                 'location' =>  Arr::random($locations),
                 'work_type' => Arr::random($workTypes),
                 'status' => Arr::random($statuses),
-                'application_deadline' => now()->addDays(3),
+
+                'application_deadline' => now()->addYears(1)->format('Y-m-d'), 
                 'experience_level' => Arr::random($experienceLevels), 
                 'salary_min' => '1000',
                 'salary_max' => '25000',

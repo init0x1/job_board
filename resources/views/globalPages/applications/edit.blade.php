@@ -65,24 +65,17 @@
 @endsection
 @section("main")
     @if(isset($job) && $job )
-        <div class="job_details_area" style="margin-top: 80px !important;">
+        <div class="job_details_area" style="margin-top: 140px !important;">
             <div class="container">
-            <div class="row">
-                <div class="col">
-                    <nav aria-label="breadcrumb " class=" rounded-3 p-3 text-bold" >
-                        <ol class="breadcrumb mb-0"style="background-color:transparent; color: green ">
-                            <li class="breadcrumb-item"><a class=" text-bold text-info" href="{{ route('user.job.index') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i> &nbsp;Back to Jobs</a></li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-8">
-                   <div class="apply_job_form white-bg">
+                    <div class="apply_job_form white-bg  p-0 rounded-md" style="padding-top: 50px;
+                        margin: 0px auto 40px;
+                        width: 640px;    border: 1px solid rgb(217, 221, 228);
+                        border-radius: 4px; ">
                         @if (session('success'))
                           <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
-                        <h4>Update Job Application</h4>
                         @if ($errors->any())
                            <div class="alert alert-danger">
                               <ul>
@@ -94,49 +87,98 @@
                         @endif
 
                         @if(Auth::check() && $application->user_id == Auth::id())
-                            <form method="POST" action="{{ route('candidate.application.update', ['id' => $application->id]) }}"
+                        <h4  style="padding:10px 5px; width:100%; background: rgb(0, 30, 76); color:white;  
+                          border-radius: 5px 5px 0 0; padding-left:5px;">Update Application </h4>  
+                        <form  style="padding:10px 20px; "  method="POST" action="{{ route('candidate.application.update', ['id' => $application->id]) }}"
                             enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+                                
+                                <div class="row">
+                                    <div class="col-md-8 name-desc">
+                                        {{--show job name and company logo--}}
+                                        <p style=" font-size:24px;line-height:34px; color:rgb(0,20,51); font-weight:600">
+                                            @if($job)
+                                              <span class="name">{{$job->title}}</span> - <span class="type">{{$job->work_type}}</span>
+                                            @endif
+                                        </p>                                          
+                                    </div>
+                                    <div class="col-md-4">
+                                       <div class="img " style="width:100px;height:50px">
+                                       @if($job && $job->company)
+                                       @php
+                                            $storagePath = public_path('storage/' .  $job->company->logo_path);
+                                            $publicPath = public_path( 'img/' .  $job->company->logo_path);
+                                            if (!empty( $job->company->logo_path) && file_exists($storagePath)) {
+                                                $imageUrl = asset('storage/' .  $job->company->logo_path);
+                                            } elseif (!empty( $job->company->logo_path) && file_exists($publicPath)) {
+                                                $imageUrl = asset( 'img/' . $job->company->logo_path);
+                                            }else {
+                                                $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                                            }      
+                                          @endphp
+                                          <img src="{{ $imageUrl }}" class="img-full w-100 h-100">
+                                        @else
+                                          <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" class="img-full w-100 h-100">
+
+                                        @endif
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p style="font-style:normal; font-weight:400; color:rgb(77, 97, 130); line-height:20px; font-size:13px">
+
+                                            The hiring team at Guestna requires you to answer the below questions.
+                                            </p>
+                                        </div>
+                                    </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="input_field">
                                             <input type="text" placeholder="Website/Portfolio link" 
-                                            value="{{ old('website', $application->website) }}"
+                                            value="{{ old('website', $application->website ?? '') }}"
                                             name="website"
                                             required>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="inputGroupFile03" name="resume_path" aria-describedby="inputGroupFileAddon03">
-
-                                                <label class="custom-file-label" for="inputGroupFile03" name="resume_path">Upload Resume</label>
-                                            </div>
+                                    <div class="col-md-12 mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label for="resume" class="form-label">Resume/CV</label>
+                                            <a
+                                                href="{{ asset('storage/' . $application->resume_path?? '') }}" 
+                                                target="_blank" class="text-info text-decoration-underline"
+                                                style="text-decoration-line: underline;"
+                                            >
+                                                View Uploaded Resume
+                                            </a>
                                         </div>
+
+                                        <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                                        
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input_field">
                                             <textarea name="cover_letter" id="" cols="30" rows="10" placeholder="Coverletter">{{ old('cover_letter', $application->cover_letter) }}</textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="submit_btn">
-                                            <button class="boxed-btn3 w-100" type="submit">Update Application</button>
+                                    <div class="col-md-12 justify-content-end row g-5">
+                                        <div class="col-md-3 submit_btn">
+                                          <button class=" w-100 text-white " style="background-color: rgb(0, 30, 76);padding: 5px;
+                                            border-radius: 5px;
+                                            font-size: 13px;" type="submit">Update Application</button>
                                         </div>
+                                        <div class="col-md-3 reset_btn p-0">
+                                          <a class="boxed-btn3 w-100  bg-secondary text-light"  href="{{ route('user.job.index') }}">cancel </a>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                             </form>
                         @else
                         <div class="alert alert-warning text-center">You need to be logged in and the application must belong to you to update.</div>
                         @endif
-                    </div>
-                </div>
+                  
             </div>
     @else
     <div class="container">
@@ -147,7 +189,8 @@
         </div>
     </div>
     @endif
-    
+    </div>
+    </div>
 @endsection
 
 @section("customJs")

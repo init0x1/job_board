@@ -64,15 +64,15 @@
    Job Board - application Form
 @endsection
 @section("main")
-@if($job)
-    <div class="job_details_area" style="margin-top: 140px !important;">
-        <div class="container">
+    @if(isset($job) && $job )
+        <div class="job_details_area" style="margin-top: 140px !important;">
+            <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="apply_job_form white-bg  p-0 rounded-md" style="padding-top: 50px;
-    margin: 0px auto 40px;
-    width: 640px;    border: 1px solid rgb(217, 221, 228);
-    border-radius: 4px; ">
+                        margin: 0px auto 40px;
+                        width: 640px;    border: 1px solid rgb(217, 221, 228);
+                        border-radius: 4px; ">
                         @if (session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
@@ -83,24 +83,41 @@
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
-                            </div>
+                          </div>
                         @endif
                         @if(Auth::check()) 
 
                         <h4  style="padding:10px 5px; width:100%; background: rgb(0, 30, 76); color:white;  
                           border-radius: 5px 5px 0 0; padding-left:5px;">Application Form </h4>
-
-                            <form  style="padding:10px 20px; " method="POST" action="{{ route('candidate.storeApplication', ['job_id' => $job->id]) }}"
+                        <form  style="padding:10px 20px; " method="POST" action="{{ route('candidate.storeApplication', ['job_id' => $job->id]) }}"
                             enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-8 name-desc">
                                         {{--show job name and company logo--}}
-                                           <p style=" font-size:24px;line-height:34px; color:rgb(0,20,51); font-weight:600"><span class="name">Front-End Developer (Next.js)</span> - <span class="type">Remote</span></p>                                       
+                                           <p style=" font-size:24px;line-height:34px; color:rgb(0,20,51); font-weight:600">
+                                            <span class="name">{{$job->title}}</span> - 
+                                            <span class="type">{{$job->work_type}}</span></p>                                       
                                     </div>
                                     <div class="col-md-4">
                                        <div class="img " style="width:100px;height:50px">
-                                            <img src="{{asset('/img/company_logos/axios.png')}}" class="w-100 h-100" alt="">
+                                        @if($job && $job->company)
+                                       @php
+                                            $storagePath = public_path('storage/' .  $job->company->logo_path);
+                                            $publicPath = public_path( 'img/' .  $job->company->logo_path);
+                                            if (!empty( $job->company->logo_path) && file_exists($storagePath)) {
+                                                $imageUrl = asset('storage/' .  $job->company->logo_path);
+                                            } elseif (!empty( $job->company->logo_path) && file_exists($publicPath)) {
+                                                $imageUrl = asset( 'img/' . $job->company->logo_path);
+                                            }else {
+                                                $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
+                                            }      
+                                          @endphp
+                                          <img src="{{ $imageUrl }}" class="img-full w-100 h-100">
+                                        @else
+                                          <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" class="img-full w-100 h-100">
+
+                                        @endif
                                         </div>
                                     </div>
                                     </div>
@@ -118,12 +135,13 @@
                                             <input type="text" placeholder="Website/Portfolio link" 
                                             value="{{ old('website', $application->user->website ?? '') }}"
                                             name="website"
-                                            required>
+                                            required
+                                            >
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="d-flex justify-content-between">
-                                            <label for="resume" class="form-label">Resume/CV</label>
+                                            <label for="resume_path" class="form-label">Resume/CV</label>
                                             <a
                                                 href="{{ asset('storage/' . Auth::user()->profile->resume_path) }}" 
                                                 target="_blank" class="text-info text-decoration-underline"
@@ -133,15 +151,15 @@
                                             </a>
                                         </div>
 
-                                        <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx">
+                                        <input type="file" class="form-control" id="resume_path" name="resume_path" accept=".pdf,.doc,.docx">
                                         
                                         @if(optional(Auth::user()->profile)->resume_path)
                                             <div class="mt-2">
                                                 
                                             </div>
                                         @endif
-                                        
-                                        @error('resume') <small class="text-danger">{{ $message }}</small> @enderror
+                                        @error('resume_path') <small class="text-danger">{{ $message }}</small> @enderror
+   
                                     </div>
                                     <div class="col-md-12">
                                         <div class="input_field">
@@ -163,7 +181,7 @@
                                 </div>
                             </form>
                         @else
-                            <div class="alert alert-warning text-center">You need to be logged in and the job must belong to you to apply.</div>
+                          <div class="alert alert-warning text-center">You need to be logged in and the job must belong to you to apply.</div>
                         @endif
     </div>
     @else
