@@ -6,6 +6,30 @@
 @section("customeCss")
 
 <style>
+      .navbar .navbar-nav .nav-item{
+      padding:  0 14px;
+    }
+    .navbar .navbar-nav .nav-link {
+        padding: 0.25rem 0;
+        text-transform:upperCase;
+        position: relative;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .navbar .navbar-nav .nav-link.active, 
+    .navbar .navbar-nav .nav-link:hover {
+        color: #0055d9 !important; 
+    }
+
+    .navbar .navbar-nav .nav-link.active::after {
+        content: "";
+        width: 100%;
+        height: 2px;
+        background-color: #0055d9        ; 
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+    }
   .catagory_area {
      border-radius: 3px;
     background-color: rgba(0,0,0,0.3);
@@ -104,7 +128,7 @@
                       <div class="job_btn">
                         <button type="submit" class="w-100" style="
                         border-color: #80B2FF;
-                        background-color: rgb(0, 8, 217);
+                        background-color:rgb(0, 85, 217);
                         font-family:'Open Sans', sans-serif ;
                         font-style:normal;
                         font-weight:400;
@@ -292,6 +316,18 @@
 
 @endsection
 @section("customJs")
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add("active");
+        }
+    });
+  });
+</script>
     <script src="/js/header_scroll.js"></script>
     @endsection
 

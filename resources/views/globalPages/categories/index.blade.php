@@ -7,11 +7,13 @@
 @section('customeCss')
 <style>
     body{
-        background-color:rgb(245,247,250)
+        background-color:rgb(245,247,250);
+        font-family: "Open Sans", sans-serif !important;
     }
-    #navabr{
-        box-shadow:0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important;
+    #navbar{
         background-color:#fff !important;
+        height:unset;
+        
     }
     nav.navbar .navbar-brand{
         color :#0055d9 !important;
@@ -47,10 +49,31 @@
         display:block !important;
 
     }
-
-    .navbar .navbar-nav a.nav-link.register-btn{
-
+    .navbar .navbar-nav .nav-item{
+      padding:  0 14px;
     }
+    .navbar .navbar-nav .nav-link {
+        padding: 0.25rem 0;
+        text-transform:upperCase;
+        position: relative;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .navbar .navbar-nav .nav-link.active, 
+    .navbar .navbar-nav .nav-link:hover {
+        color: #0055d9 !important; 
+    }
+
+    .navbar .navbar-nav .nav-link.active::after {
+        content: "";
+        width: 100%;
+        height: 2px;
+        background-color: #0055d9        ; 
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+    }
+
 
 </style>
 
@@ -110,14 +133,18 @@
     );
     navbar.style.backgroundColor = "#fff";
     navbar.style.border = "1px solid rgba(0, 0, 0, 0.19)";
-        // navbar.style.boxShadow =
-        //     "0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19)";
+
     if (postBtn && jobsIcon) {
-                jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
-                jobsIcon.fill="rgb(131,145,167)"
+        jobsIcon.setAttribute("fill", "rgb(131,145,167)"); // Change color when scrolled
+        jobsIcon.fill="rgb(131,145,167)"
     }
     navLinks.forEach((link) => {
-        link.style.color = "rgb(64, 86, 120)";
-        });
+        link.style.color = "rgb(64, 86, 120)"; 
+    });
+    navLinks.forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add("active");
+        }
+    });
 </script>
 @endsection
