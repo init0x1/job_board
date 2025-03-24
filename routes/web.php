@@ -84,7 +84,7 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
     Route::post('/profile/update-image', [CandidateProfileController::class, 'updateImage'])->name('candidate.profile.updateImage');
 
 
- 
+
     Route::get('/dashboard', [CandidateDashboardController::class, 'index_user'])->name('candidate.dashboard');
 
     //application of candidtes index , show Routes, edit, create or apply , delete
@@ -116,7 +116,14 @@ Route::middleware(['auth', 'role:employer'])->group(function () {
     Route::get('/employer/profile', [CompanyController::class, 'employerProfile'])->name('employer.profile');
     Route::post('/employer/profile', [CompanyController::class, 'updateEmployerProfile'])->name('employer.profile.update');
     Route::post('/employer/profile/update-image', [CompanyController::class, 'updateImage'])->name('employer.profile.updateImage');
-   
+
+    // Application routes
+    Route::get('/employer/applications', [ApplicationController::class, 'employerApplications'])->name('employer.applications');
+    Route::get('/employer/applications/{id}', [ApplicationController::class, 'showEmployerApplication'])->name('employer.applications.show');
+    Route::post('/employer/applications/{id}/approve', [ApplicationController::class, 'approveApplication'])->name('employer.applications.approve');
+    Route::post('/employer/applications/{id}/reject', [ApplicationController::class, 'rejectApplication'])->name('employer.applications.reject');
+    Route::get('/employer/applications/candidate/{id}', [ApplicationController::class, 'viewCandidate'])->name('employer.applications.candidate');
+
 });
 
 // =============================
