@@ -287,6 +287,7 @@
                                 data-cover="{{ $application->cover_letter }}" 
                                 data-website="{{ $application->website }}" 
                                 data-posted="{{$application->created_at}}"
+                                data-status="{{ $application->status }}" 
 
                                 onclick="openApplicationReview(this)">
                                 <div class="d-flex align-items-center">
