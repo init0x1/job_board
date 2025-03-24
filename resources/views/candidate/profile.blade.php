@@ -94,8 +94,7 @@
                 <div class="card-body">
                     <ul class="list-group">
                     
-                        <li class="list-group-item"><a >Jobs Applied</a></li>
-                        <li class="list-group-item"><a >Saved Jobs</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.job.index') }}">Jobs Applied</a></li>
                         <li class="list-group-item"><a href="{{ route('logout') }}">Logout</a></li>
                     </ul>
                 </div>

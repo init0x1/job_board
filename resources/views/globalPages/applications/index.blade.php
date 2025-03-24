@@ -83,11 +83,6 @@
                                     <a href="{{ route('candidate.application.show', $application->id) }}" class="btn btn-info btn-sm">View</a>
                                     @if(($application->status == 'pending' && $application->job->application_deadline >= now()))
                                     <a href="{{ route('candidate.application.edit', $application->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                    <form action="{{ route('candidate.application.destroy', $application->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
                                     @endif
                                     
                                 </div>
