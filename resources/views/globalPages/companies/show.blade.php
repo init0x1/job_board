@@ -2,7 +2,7 @@
 <!-- companies/show.blade.php -->
 @extends("candidates.layouts.app")
 @section("title")
-   Job Board - {{ $company->name }}
+   WUZZEFNY -{{ $company->name }}
 @endsection
 @section('customeCss')
 <style>

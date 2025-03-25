@@ -1,7 +1,7 @@
 @extends("candidates.layouts.app")
 
 @section("title")
-   Job Board - Applications
+   WUZZEFNY -Applications
 @endsection
 
 @section("customeCss")

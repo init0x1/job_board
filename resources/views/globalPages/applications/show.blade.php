@@ -1,11 +1,9 @@
     
 @extends("candidates.layouts.app")
-
 @section("title")
-   Job Board - Candidates
+   WUZZEFNY -application Form
 @endsection
 
-@section("main")
 @section('customeCss')
 <style>
     body{
@@ -81,9 +79,7 @@
 </style>
 
 @endsection
-@section("title")
-   Job Board - application Form
-@endsection
+
 @section("main")
 @if(Auth::check() && Auth::user()->id == $application->user_id)
     @if(isset($job) && $job )

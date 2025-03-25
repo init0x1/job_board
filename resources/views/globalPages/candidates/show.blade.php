@@ -3,7 +3,7 @@
 @extends("candidates.layouts.app")
 
 @section("title")
-   Job Board - {{ $candidate->name }}
+   WUZZEFNY -{{ $candidate->name }}
 @endsection
 @section('customeCss')
 <style>

@@ -1,11 +1,9 @@
     
 @extends("candidates.layouts.app")
-
 @section("title")
-   Job Board - Candidates
+   WUZZEFNY -application Form
 @endsection
 
-@section("main")
 @section('customeCss')
 <style>
     body{
@@ -81,9 +79,7 @@
 </style>
 
 @endsection
-@section("title")
-   Job Board - application Form
-@endsection
+
 @section("main")
     @if(isset($job) && $job )
         <div class="job_details_area" style="margin-top: 140px !important;">

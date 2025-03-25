@@ -2,7 +2,7 @@
 @extends("candidates.layouts.app")
 
 @section("title")
-   Job Board - {{ $job ? $job->title : 'Job Details' }}
+   WUZZEFNY -{{ $job ? $job->title : 'Job Details' }}
 @endsection
 @section('customeCss')
 <style>
