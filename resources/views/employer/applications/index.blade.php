@@ -86,25 +86,6 @@
                                             <a href="{{ route('employer.applications.show', $application->id) }}" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
-                                            <a href="{{ route('employer.applications.candidate', $application->user->id) }}" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-user"></i> Candidate
-                                            </a>
-
-                                            @if($application->status == 'pending')
-                                                <form action="{{ route('employer.applications.approve', $application->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success">
-                                                        <i class="fas fa-check"></i> Approve
-                                                    </button>
-                                                </form>
-
-                                                <form action="{{ route('employer.applications.reject', $application->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger">
-                                                        <i class="fas fa-times"></i> Reject
-                                                    </button>
-                                                </form>
-                                            @endif
                                         </div>
                                     </td>
                                 </tr>
