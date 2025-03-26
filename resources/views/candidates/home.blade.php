@@ -138,6 +138,20 @@ WUZZEFNY
  .slick-slide {
     display: block;
 }
+h2.last-jobs {
+  position:relative;
+  margin: 0 0 36px;
+
+}
+h2.last-jobs::after {
+   content:"";
+    position: absolute;
+    width: 55%;
+    height: 4px;
+    background: #001E4C;
+    bottom: -12px;
+    left: 1px;
+}
 </style>
 @endsection
 
@@ -162,7 +176,7 @@ WUZZEFNY
               Find the Best Jobs in Egypt
             </h1>
             <h2 class="">
-              Searching for vacancies & career opportunities? WUZZUF helps you
+              Searching for vacancies & career opportunities? WUZZEFNY helps you
               in your job search in Egypt
             </h2>
           </div>
@@ -308,116 +322,178 @@ WUZZEFNY
   </div>
 
     <!-- companies_area_end -->
-
-    <div class="popular_catagory_area">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="section_title mb-40">
-              <h3>Popolar Categories</h3>
-            </div>
+   <!-- start  what out website provide -->
+    <div class="our-provide py-5" style="background:rgb(245,246,247)">
+      <div class="mx-auto" style="width:940px">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-md-8">
+            <h2 style="line-height:45px; font-size:30px;font-weight:100;color:#001433">Explore the Right Jobs 
+              <p style="line-height:45px; font-size:30px;font-weight:100;color:#001433">and Career opportunities</p>
+            </h2>
+            <p style="line-height:28px; font-size:16px;font-weight:400;color:rgb(77, 97, 130)">Explore feed knows what you need, based on your career interests, will find you what you are searching for. And don't worry about too many opportunities, you can always save them for later.</p>
+            <a class="boxed-btn3 " href="{{ route('register') }}">Get Started Now</a>
           </div>
-        </div>
-        <div class="row">
-          @foreach($popularCategories as $category)
-            <div class="col-lg-4 col-xl-3 col-md-6">
-              <div class="single_catagory">
-              <a href="{{ route('user.job.index', ['category' => $category->id]) }}">
-                  <h4>{{ $category->name }}</h4>
-              </a>
-               
-                {{--calc  available postions from count jobs  in single category and filter them where
-                  application_deadline >= now and status == 'approved'--}}
-                  <p>
-                  <span>
-                    {{ $category->jobs->count() }}
-                  </span> Available positions
-                </p>
-
-              </div>
+          <div class="col-md-4">
+            <div class="img" style="width:100%;height: 313px;">
+              <img src="https://static.wuzzuf-data.net/934da6cedfd8bf68a599053f359dd42e.webp?height=313&width=565" alt="" style=""
+              class="w-100 h-100"/>
             </div>
-          @endforeach
-        </div>
-
-      </div>
-    </div>    <!-- popular_catagory_area_start  -->
-
-    <!-- popular_catagory_area_end  -->
-    <!-- job_listing_area_start  -->
-       <div class="job_listing_area ">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6">
-            <div class="section_title">
-              <h3>Job Listing</h3>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="brouse_job text-right">
-              <a href="{{ route('user.job.index') }}" class="boxed-btn4">Browse More Job</a>
-            </div>
-          </div>
-        </div>
-        <div class="job_lists">
-          <div class="row">
-          @foreach($popularJobs as $job)
-
-            <div class="col-lg-12 col-md-12">
-              <div class="single_jobs white-bg d-flex justify-content-between">
-                <div class="jobs_left d-flex align-items-center">
-                <div class="thumb">
-                  @if($job->company && $job->company->logo_path)
-                    @php
-                      $storagePath = public_path('storage/' . $job->company->logo_path);
-                      $publicPath = public_path('img/'.$job->company->logo_path);
-
-                      if (!empty($$job->company->logo_path) && file_exists($storagePath)) {
-                          $imageUrl = asset('storage/' . $job->company->logo_path);
-                      } elseif (!empty($job->company->logo_path) && file_exists($publicPath)) {
-                          $imageUrl = asset('img/' .$job->company->logo_path);
-                      }else {
-                        $imageUrl =asset('img/' .'company_logos/company_defualt_logo.svg' );
-                      }      
-                    @endphp
-        
-                   <img src="{{ $imageUrl }}" class="rounded mb-3 w-100 h-100" >
-                  @else 
-                  <img src="{{asset('img/' .'company_logos/company_defualt_logo.svg' )}}" alt="company logo"  class=" w-100 h-100"/>
-                  @endif
-
-                </div>
-
-                  <div class="jobs_conetent">
-                 
-                    <a href="{{ route('user.job.show', $job->id) }}"><h4>{{$job->title}}</h4></a>
-                    <div class="links_locat d-flex align-items-center">
-                      <div class="location">
-                        <p><i class="fa fa-map-marker"></i>{{$job->location}}</p>
-                      </div>
-                      <div class="location">
-                        <p><i class="fa fa-clock-o"></i> {{$job->work_type}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="jobs_right">
-                  <div class="apply_now">
-                    <a href="{{ route('user.job.show', $job->id) }}" class="boxed-btn3">Apply Now</a>
-                  </div>
-                  <div class="date">
-                    <p>Date line: {{$job->application_deadline}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            @endforeach
-
           </div>
         </div>
       </div>
     </div>
+    <!-- end what our website provide -->
+    <div class="latest-jobs bg-white" style="padding:56px 0 104px">
+      <div class="container">
+        <div class="row">
+          <h2 class="last-jobs" 
+          style="font-size:30px;line-height:45px;font-weight:300;color:rgb(0, 20, 51);font-style:normal;">Latest Jobs
+          </h2>
 
+        </div>
+        <div class="row g-2">
+          @foreach($popularJobs as $job)
+            <div class="col-md-4 col-sm-6 col-lg-3 d-flex align-items-start flex-column" 
 
+                style=" padding: 6px 6px;">
+                <a  href="{{ route('user.job.show', $job->id) }}" style="padding:16px; background: #ffffff;display:block;
+                    border-radius: 4px;
+                    border: 1px solid #D9DDE4;
+                    height: 113px;
+                    width: 276px;">  
+                  <h4 style="font-size:16px;line-height:24px;font-weight:400;color:rgb(0, 85, 217);font-style:normal">{{$job->title}}</h4>
+                  <p style="font-size:14px;line-height:22px;font-weight:400;color:#4d6182;font-style:normal"><span>{{$job->company->name}}</span> - <span>{{$job->location}}</span></p>
+                  <p style="font-size:12px;line-height:19px;font-weight:400;color:rgb(102, 120, 147);font-style:normal">{{ $job->created_at->diffForHumans() }}</p>
+                              </a>
+              </div> 
+          @endforeach 
+        </div>
+          <div class="row  justify-content-end align-items-center">
+                  <div class="col-md-3 d-flex flex-row justify-content-end align-items-center">
+                    <a href="{{ route('user.job.index')}}"><p class="m-0"style="font-size:16px;line-height:24px;font-weight:400;color:rgb(0, 85, 217);font-style:normal">See other jobs on WUZZUF</p>
+                    <div class="image" style="width:50px; height:20px">
+                      
+                      <img src="/img/svg_icon/right-arrow.svg" alt="" class="w-100 h-100">
+                     </a></div>
+                  </div>
+        </div>
+      </div>
+    </div>
+     <!-- get ready section to start -->
+      <div class="get-ready py-5"style="background:rgb(245,246,247)">
+        <div class="mx-auto" style="width:940px">
+          <div class="content d-flex justify-content-center align-items-center flex-column">
+             <h2 style="line-height:normal; font-size:30px;font-weight:300;color:#4d6182">Get ready for more opportunities! </h2>
+             <p style="line-height:normal; font-size:16px;font-weight:300;color:#4d6182;margin-bottom: 1rem;margin-top: 1rem;">You are minutes away from the right job.</p>
+             <a  style="line-height:32px; font-size:18px;font-weight:400;color:#fff ; padding:12px 40px; margin-top:20px; margin-bottom:20px"
+              class="boxed-btn3" href="{{ route('register') }}">Join Now</a>
+          </div>
+        </div>
+      </div>
+      <!-- get category by category start -->
+      <div class="category-jobs bg-white" style="padding:56px 0 104px">
+      <div class="container">
+        <div class="row">
+          <h2 class="last-jobs" 
+          style="font-size:30px;line-height:45px;font-weight:300;color:rgb(0, 20, 51);font-style:normal;">Browse Jobs by Categories
+
+          </h2>
+
+        </div>
+        <div class="row g-2">
+         
+          @foreach($popularCategories->slice(0,4) as $category)
+            <div class="col-md-4 col-sm-6 col-lg-3 d-flex align-items-start flex-column" style="border-raduis:5px;padding:5px 24px 5px 0">
+              <a class="inner " href="{{ route('user.job.index', ['category' => $category->id]) }}" style="display:block;border-raduis:5px;position:relative;">
+                 <div class="image" style="width:100%;height:100%">
+                <!-- public\img\category\It_and_software.webp -->
+                <img src="{{asset('img/'.$category->image)}}" alt="{{$category->name}}" class="w-100 h-100">
+              </div>
+              <div class="overlay" style="background:linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));position:absolute;top:0;left:0;bottom:0;right:0;">
+                  <div class="content "style="
+                      height: 100%;
+                      display: flex;
+                      align-items: flex-start;
+                      justify-content: flex-end;
+                      flex-direction: column;
+                      padding: 0 12px">
+                    <p class="text-white"><span>{{$category->name}}</span> Jobs</p>
+                  </div>
+              </div>
+                              </a>
+             
+                
+              </div> 
+          @endforeach 
+        </div>
+          <div class="row  justify-content-end align-items-center">
+                  <div class="col-md-3 d-flex flex-row justify-content-end align-items-center">
+                    <a href="{{ route('user.category.index')}}">
+                      <p class="m-0"
+                      style="font-size:16px;line-height:24px;font-weight:400;
+                      color:rgb(0, 85, 217);font-style:normal">Browse All Categories</p>
+                    <div class="image" style="width:50px; height:20px">
+                      <img src="/img/svg_icon/right-arrow.svg" alt="" class="w-100 h-100">
+                     
+                      </a></div>
+                  </div>
+        </div>
+      </div>
+    </div>
+    <!-- get job by categories end -->
+    <!-- get job by experince level start -->
+    <div class="experince-jobs" style="padding:56px 0 104px; background:rgb(245,246,247)">
+      <div class="container">
+        <div class="row">
+          <h2 class="last-jobs" 
+          style="font-size:30px;line-height:45px;font-weight:300;color:rgb(0, 20, 51);font-style:normal;">Browse Jobs by Career Level
+
+          </h2>
+
+        </div>
+        <div class="row g-2">
+         
+          @foreach($experiences_level as $type)
+            <div class="col-md-4 col-sm-6 col-lg-3 d-flex align-items-start flex-column" style="border-raduis:5px;padding:5px 24px 5px 0">
+            <a class="inner " href="{{ route('user.job.index', ['experience' => $type['name']]) }}" style="display:block;border-radius:10px;position:relative;">
+            <div class="image" style="width:100%;height:100%">
+                <!-- public\img\category\It_and_software.webp -->
+                <img src="{{ asset('img/' . $type['image']) }}" alt="{{ $type['name'] }}" class="w-100 h-100">
+                </div>
+              <div class="overlay" style="background:linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));position:absolute;top:0;left:0;bottom:0;right:0;">
+                  <div class="content "style="
+                      height: 100%;
+                      display: flex;
+                      align-items: flex-start;
+                      justify-content: flex-end;
+                      flex-direction: column;
+                      padding: 0 12px">
+                    <p class="text-white"><span>{{ $type['name'] }}</span> Level Jobs</p>
+                    </div>
+              </div>
+                              </a>
+             
+                
+              </div> 
+          @endforeach 
+        </div>
+          <div class="row  justify-content-end align-items-center">
+                  <div class="col-md-3 d-flex flex-row justify-content-end align-items-center">
+                    <a href="{{ route('user.job.index')}}">
+                      <p class="m-0"
+                      style="font-size:16px;line-height:24px;font-weight:400;
+                      color:rgb(0, 85, 217);font-style:normal">Browse All Jobs in WUZZEF</p>
+                    <div class="image" style="width:50px; height:20px">
+                      <img src="/img/svg_icon/right-arrow.svg" alt="" class="w-100 h-100">
+                     
+                    </a></div>
+                  </div>
+        </div>
+      </div>
+    </div>
+    <!-- get job by categories end -->
+
+   
 @endsection
 @section("customJs")
 <script>
