@@ -13,7 +13,6 @@ body{
     }
     #navbar{
         background-color:#fff !important;
-        height:unset;
         
     }
     nav.navbar .navbar-brand{

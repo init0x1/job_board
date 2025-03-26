@@ -13,7 +13,6 @@ body{
     }
     #navbar{
         background-color:#fff !important;
-        height:unset;
         
     }
     nav.navbar .navbar-brand{
@@ -81,7 +80,7 @@ body{
 @endsection
 @section("main")
     @if($job)
-    <div class="job_details_area">
+    <div class="job_details_area mt-5">
 
         <div class="container">
         <div class="row">
