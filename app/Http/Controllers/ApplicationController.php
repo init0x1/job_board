@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\JobListing;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Profile;
 class ApplicationController extends Controller
 {
 
@@ -149,6 +149,39 @@ class ApplicationController extends Controller
 
     //we need to implement viewCandidate!
 
+    public function viewCandidate($id)
+    {
+        try {
+
+            $candidate = User::with(['profile', 'applications.job'])
+                ->where('id', $id)
+                ->where('role', 'candidate')
+                ->firstOrFail();
+
+            if (!$candidate->profile) {
+                return redirect()->route('employer.applications')
+                    ->with('error', 'Candidate profile not found');
+            }
+
+
+            $skills = $candidate->profile->skills ? json_decode($candidate->profile->skills) : [];
+            $experiences = $candidate->profile->experiences ? json_decode($candidate->profile->experiences) : [];
+            $certifications = $candidate->profile->certifications ? json_decode($candidate->profile->certifications) : [];
+
+            return view('employer.applications.candidate', [
+                'candidate' => $candidate,
+                'profile' => $candidate->profile,
+                'skills' => $skills,
+                'experiences' => $experiences,
+                'certifications' => $certifications,
+            ]);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->route('employer.applications')
+                ->with('error', 'Candidate not found');
+        }
+    }
+
     // Show applications user has applied to
     public function showUserApplications()
     {
@@ -189,14 +222,14 @@ class ApplicationController extends Controller
             'cover_letter' => 'required|string',
             'resume_path' => 'nullable|file|mimes:pdf,doc,docx|max:2048'
         ]);
-    
+
         $user = Auth::user();
         $profile = $user->profile;
-    
+
         // Check if a new resume is uploaded
         if ($request->hasFile('resume_path')) {
             $resume_path = $request->file('resume_path')->store('resumes', 'public');
-    
+
             // Update user's profile resume
             if ($profile) {
                 $profile->update(['resume_path' => $resume_path]);
@@ -205,7 +238,7 @@ class ApplicationController extends Controller
             // Use the existing resume from the user's profile
             $resume_path = $profile->resume_path ?? null;
         }
-    
+
         // Create the job application
         Application::create([
             'user_id' => $user->id,
@@ -215,10 +248,10 @@ class ApplicationController extends Controller
             'resume_path' => $resume_path,
             'status' => 'pending'
         ]);
-    
+
         return redirect()->route('candidate.application.index')->with('success', 'Application submitted successfully!');
     }
-    
+
 
     public function edit($id)
     {
