@@ -1,11 +1,10 @@
-    
 @extends("candidates.layouts.app")
 
 @section("title")
 WUZZEFNY - Candidates
 @endsection
 
-@section("main")
+
 @section('customeCss')
 <style>
     body{
@@ -58,8 +57,9 @@ WUZZEFNY - Candidates
     }
 
 </style>
+@endsection
 @section('main')
-<div class="container  pt-5" style="margin-top:105px">
+<div class="container mt-5">
     <div class="row justify-content-center">
         <!-- Profile Picture & Account Settings -->
         <div class="col-md-3">
@@ -83,6 +83,8 @@ WUZZEFNY - Candidates
                     </form>
 
                     <h5 class="mt-3">{{ Auth::user()->name }}</h5>
+                    <h6 class="text-muted">{{ Auth::user()->profile->job_title ?? 'Not Set' }}</h6>
+
                 </div>
             </div>
 
@@ -94,8 +96,8 @@ WUZZEFNY - Candidates
                 <div class="card-body">
                     <ul class="list-group">
                     
-                        <li class="list-group-item"><a href="{{ route('user.job.index') }}">Jobs Applied</a></li>
-                        <li class="list-group-item"><a href="{{ route('logout') }}">Logout</a></li>
+                        <li class="list-group-item"><a href="{{ route('user.job.index') }}" >Jobs </a></li>
+                      
                     </ul>
                 </div>
             </div>
@@ -154,11 +156,19 @@ WUZZEFNY - Candidates
                         </div>
 
                         <div class="mb-3">
-                            <label for="skills" class="form-label">Skills</label>
-                            <input type="text" class="form-control" id="skills" name="skills" 
-                                   value="{{ old('skills', optional(Auth::user()->profile)->skills ? Auth::user()->profile->skills->pluck('name')->implode(', ') : '') }}">
-                            @error('skills') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
+    <label for="job_title" class="form-label">Job Title</label>
+    <input type="text" class="form-control" id="job_title" name="job_title" 
+           value="{{ old('job_title', Auth::user()->profile->job_title) }}" required>
+    @error('job_title') <small class="text-danger">{{ $message }}</small> @enderror
+</div>
+
+<div class="mb-3">
+    <label for="skills" class="form-label">Skills (Separate with commas)</label>
+    <input type="text" class="form-control" id="skills" name="skills" 
+           value="{{ old('skills', Auth::user()->profile->skills->pluck('name')->implode(', ')) }}" required>
+    @error('skills') <small class="text-danger">{{ $message }}</small> @enderror
+</div>
+
 
                         <div class="mb-3">
                             <label for="resume" class="form-label">Resume/CV</label>
@@ -193,6 +203,7 @@ WUZZEFNY - Candidates
 </script>
 
 @endsection
+
 
 @section("customJs")
 <script>

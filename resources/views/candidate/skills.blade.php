@@ -40,6 +40,12 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="job_title" class="form-label">Job Title</label>
+                            <input type="text" class="form-control" id="job_title" name="job_title" value="{{ old('job_title') }}" placeholder="e.g. Software Engineer" required>
+                            @error('job_title') <div class="text-danger">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="skills" class="form-label">Skills (Separate with commas)</label>
                             <input type="text" class="form-control" id="skills" name="skills" value="{{ old('skills') }}" placeholder="e.g. PHP, Laravel, JavaScript, MySQL" required>
                             @error('skills') <div class="text-danger">{{ $message }}</div> @enderror

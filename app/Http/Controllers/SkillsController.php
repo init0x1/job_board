@@ -30,13 +30,14 @@ class SkillsController extends Controller
             'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             'skills' => 'required|string',
             'bio' => 'required|string',
+            'job_title' => 'required|string|max:255',
         ]);
 
         $user = Auth::user();
 
         // Ensure profile exists
-        $profile = Profile::firstOrCreate(
-            ['user_id' => $user->id], // Find by user_id
+        $profile = Profile::updateOrCreate(
+            ['user_id' => $user->id], 
             [
                 'phone_number' => $request->phone_number,
                 'address' => $request->address,
@@ -45,6 +46,7 @@ class SkillsController extends Controller
                 'resume_path' => $request->file('resume')
                     ? $request->file('resume')->store('resumes', 'public')
                     : null,
+                'job_title' => $request->job_title,
             ]
         );
 
@@ -55,7 +57,7 @@ class SkillsController extends Controller
 
         foreach ($skillNames as $skillName) {
             $skill = Skill::firstOrCreate(
-                ['slug' => strtolower(str_replace(' ', '-', $skillName))], // Generate slug
+                ['slug' => strtolower(str_replace(' ', '-', $skillName))], 
                 ['name' => ucfirst($skillName)]
             );
 
