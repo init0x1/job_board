@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <h5 class="fw-bold text-warning">View Applications</h5>
                     <p class="text-muted">Review applications submitted by candidates for your jobs.</p>
-                    <a href="#" class="btn btn-warning text-white">
+                    <a href="{{ route('employer.applications') }}" class="btn btn-warning text-white">
                         <i class="bi bi-file-earmark-text-fill"></i> View Applications
                     </a>
                 </div>
