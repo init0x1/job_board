@@ -407,7 +407,20 @@ h2.last-jobs::after {
               <a class="inner " href="{{ route('user.job.index', ['category' => $category->id]) }}" style="display:block;border-raduis:5px;position:relative;">
                  <div class="image" style="width:100%;height:100%">
                 <!-- public\img\category\It_and_software.webp -->
-                <img src="{{asset('img/'.$category->image)}}" alt="{{$category->name}}" class="w-100 h-100">
+                 
+                @php
+                            $storagePath = public_path('storage/' . $category->image);
+                            $publicPath = public_path( 'img/' . $category->image);
+                            if (!empty($category->image) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $category->image);
+                            } elseif (!empty($category->image) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'img/' .$category->image);
+                            }else {
+                                $imageUrl =asset('img/category/It_and_software.webp' );
+                            }      
+                        @endphp
+                        <img src="{{ $imageUrl }}" class="img-full w-100 h-100" alt="{{ $category->name }}">
+                {{--<img src="{{asset('img/'.$category->image)}}" alt="{{$category->name}}" class="w-100 h-100">--}}
               </div>
               <div class="overlay" style="background:linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));position:absolute;top:0;left:0;bottom:0;right:0;">
                   <div class="content "style="
