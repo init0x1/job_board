@@ -106,4 +106,41 @@ class AuthController extends Controller
 
         return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
     }
+
+
+
+    /**
+ * Show the admin profile edit form.
+ */
+public function editProfile()
+{
+    return view('admin.profile.edit', ['admin' => Auth::user()]);
+}
+
+/**
+ * Update the admin profile.
+ */
+public function updateProfile(Request $request)
+{
+    $admin = Auth::user();
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $admin->id,
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    // Handle Image Upload
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('admin_images', 'public');
+        $admin->image = $imagePath;
+    }
+
+    $admin->name = $request->name;
+    $admin->email = $request->email;
+    $admin->save();
+
+    return back()->with('success', 'Profile updated successfully.');
+}
+
 }

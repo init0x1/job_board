@@ -140,9 +140,12 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admi
 
 // Admin Dashboard (Only for Admins)
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::get('/profile', [AuthController::class, 'editProfile'])->name('admin.profile.edit');
+    Route::put('/profile/update', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
     // Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-
+   
     // Manage users
     Route::get('/users/{role}', [AdminDashboardController::class, 'listUsers'])->name('admin.users.list');
     Route::get('/users/edit/{id}', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
