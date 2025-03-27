@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand" href="{{ route('dashboard') }}">
-            <x-application-logo class="d-inline-block align-top" width="30" height="30" />
+        <a class="navbar-brand fw-bold text-primary" href="{{ route('admin.dashboard') }}">
+            <i class="bi bi-briefcase-fill"></i> Job Board
         </a>
 
         <!-- Hamburger Button -->
@@ -27,52 +27,22 @@
                         {{ __('Jobs') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="jobsDropdown">
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/jobs/all') ? 'active' : '' }}"
-                               href="{{ url('/admin/jobs/all') }}">
-                                All Jobs
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/jobs/approved') ? 'active' : '' }}"
-                               href="{{ url('/admin/jobs/approved') }}">
-                                Approved Jobs
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/jobs/pending') ? 'active' : '' }}"
-                               href="{{ url('/admin/jobs/pending') }}">
-                                Pending Jobs
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/jobs/rejected') ? 'active' : '' }}"
-                               href="{{ url('/admin/jobs/rejected') }}">
-                                rejected Jobs
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item {{ request()->is('admin/jobs/all') ? 'active' : '' }}" href="{{ url('/admin/jobs/all') }}">All Jobs</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/jobs/approved') ? 'active' : '' }}" href="{{ url('/admin/jobs/approved') }}">Approved Jobs</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/jobs/pending') ? 'active' : '' }}" href="{{ url('/admin/jobs/pending') }}">Pending Jobs</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/jobs/rejected') ? 'active' : '' }}" href="{{ url('/admin/jobs/rejected') }}">Rejected Jobs</a></li>
                     </ul>
                 </li>
 
+                <!-- Categories Dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {{ request()->is('admin/categories*') ? 'active' : '' }}"
                        href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ __('Categories') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/categories') ? 'active' : '' }}"
-                               href="{{ url('/admin/categories') }}">
-                                All Categories
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/categories/create') ? 'active' : '' }}"
-                               href="{{ url('/admin/categories/create') }}">
-                                Create New Category
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item {{ request()->is('admin/categories') ? 'active' : '' }}" href="{{ url('/admin/categories') }}">All Categories</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/categories/create') ? 'active' : '' }}" href="{{ url('/admin/categories/create') }}">Create New Category</a></li>
                     </ul>
                 </li>
 
@@ -83,40 +53,22 @@
                         {{ __('Users') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="usersDropdown">
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/users/all') ? 'active' : '' }}"
-                               href="{{ url('/admin/users/all') }}">
-                                All Users
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/users/candidate') ? 'active' : '' }}"
-                               href="{{ url('/admin/users/candidate') }}">
-                                Candidates
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/users/employer') ? 'active' : '' }}"
-                               href="{{ url('/admin/users/employer') }}">
-                                Employers
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ request()->is('admin/users/admin') ? 'active' : '' }}"
-                               href="{{ url('/admin/users/admin') }}">
-                                Admins
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item {{ request()->is('admin/users/all') ? 'active' : '' }}" href="{{ url('/admin/users/all') }}">All Users</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/users/candidate') ? 'active' : '' }}" href="{{ url('/admin/users/candidate') }}">Candidates</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/users/employer') ? 'active' : '' }}" href="{{ url('/admin/users/employer') }}">Employers</a></li>
+                        <li><a class="dropdown-item {{ request()->is('admin/users/admin') ? 'active' : '' }}" href="{{ url('/admin/users/admin') }}">Admins</a></li>
                     </ul>
                 </li>
             </ul>
 
-            <!-- User Dropdown -->
+            <!-- User Dropdown with Image -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('default-avatar.png') }}"
+                             alt="Admin Avatar" class="rounded-circle me-2" width="35" height="35">
+                        <span>{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li>
