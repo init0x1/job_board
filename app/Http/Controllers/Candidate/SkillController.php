@@ -26,7 +26,7 @@ class SkillController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'phone_number' => 'required|string|max:15',
+            'phone_number' => 'required|string|max:15|unique:users,phone_number',
             'address' => 'required|string|max:255',
             'linkedin_url' => 'nullable|url',
             'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
