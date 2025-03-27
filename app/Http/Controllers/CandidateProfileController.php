@@ -39,7 +39,6 @@ class CandidateProfileController extends Controller
             'linkedin_url' => 'nullable|url',
             'bio' => 'nullable|string',
             'resume' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'job_title' => 'required|string|max:255',
             'skills' => 'required|string',
         ]);
 

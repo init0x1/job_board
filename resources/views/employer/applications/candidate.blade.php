@@ -74,22 +74,6 @@
                     </div>
                 </div>
 
-                <!-- Skills Section -->
-                @if(count($skills) > 0)
-                    <div class="card mb-4">
-                        <div class="card-header bg-white">
-                            <h4 class="mb-0">Skills</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex flex-wrap gap-2">
-                                @foreach($skills as $skill)
-                                    <span class="badge bg-primary">{{ $skill }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
                 <!-- Experience Section -->
                 @if(count($experiences) > 0)
                     <div class="card mb-4">

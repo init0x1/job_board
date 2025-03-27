@@ -164,14 +164,14 @@ class ApplicationController extends Controller
             }
 
 
-            $skills = $candidate->profile->skills ? json_decode($candidate->profile->skills) : [];
+          //  $skills = $candidate->profile->skills ? json_decode($candidate->profile->skills) : [];
             $experiences = $candidate->profile->experiences ? json_decode($candidate->profile->experiences) : [];
             $certifications = $candidate->profile->certifications ? json_decode($candidate->profile->certifications) : [];
 
             return view('employer.applications.candidate', [
                 'candidate' => $candidate,
                 'profile' => $candidate->profile,
-                'skills' => $skills,
+                //'skills' => $skills,
                 'experiences' => $experiences,
                 'certifications' => $certifications,
             ]);
