@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('resume_path')->nullable();
             $table->string('linkedin_url')->nullable();
-            $table->text('skills')->nullable(); // JSON field for multiple skills
             $table->text('experiences')->nullable(); // JSON field for experiences
             $table->text('certifications')->nullable(); // JSON field for certifications
             $table->timestamps();
